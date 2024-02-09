@@ -1,13 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.5rem;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1 {
+  font-size: 4rem;
+  line-height: 60px;
+}
+h2 {
+  font-size: 3rem;
+}
+h3 {
+  font-size: 2rem;
+}
+h4 {
+  font-size: 1.5rem;
+}
+
+label {
+  font-size: 1.5rem;
+}
+
+input {
+  border: 2px solid rgb(226, 226, 226);
+  padding: 8px;
+  border-radius: 4px;
+}
+input:focus {
+  outline: none;
+  border-color: #782a76;
+}
+select {
+  border: 2px solid rgb(226, 226, 226);
+  padding: 8px;
+  border-radius: 4px;
+}
+select:focus {
+  outline: none;
+  border-color: #782a76;
+}
+textarea {
+  border: 2px solid rgb(226, 226, 226);
+  padding: 8px;
+  border-radius: 4px;
+  min-height: 200px;
+  max-height: 200px;
+}
+textarea:focus {
+  outline: none;
+  border-color: #782a76;
+}
+
+button {
+  background-color: #782a76;
+  border-radius: 4px;
+  width: fit-content;
+  padding: 8px 16px;
+  color: white;
 }
