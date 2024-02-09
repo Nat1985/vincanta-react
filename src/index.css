@@ -10,12 +10,15 @@ h1 {
   font-size: 4rem;
   line-height: 60px;
 }
+
 h2 {
   font-size: 3rem;
 }
+
 h3 {
   font-size: 2rem;
 }
+
 h4 {
   font-size: 1.5rem;
 }
@@ -29,19 +32,23 @@ input {
   padding: 8px;
   border-radius: 4px;
 }
+
 input:focus {
   outline: none;
   border-color: #782a76;
 }
+
 select {
   border: 2px solid rgb(226, 226, 226);
   padding: 8px;
   border-radius: 4px;
 }
+
 select:focus {
   outline: none;
   border-color: #782a76;
 }
+
 textarea {
   border: 2px solid rgb(226, 226, 226);
   padding: 8px;
@@ -49,6 +56,14 @@ textarea {
   min-height: 200px;
   max-height: 200px;
 }
+
+@media (max-width: 768px) {
+  textarea {
+    min-width: 320px;
+    max-width: 320px;
+  }
+}
+
 textarea:focus {
   outline: none;
   border-color: #782a76;
