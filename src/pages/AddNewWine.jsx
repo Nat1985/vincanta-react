@@ -60,7 +60,7 @@ const AddNewWine = () => {
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8">
             <h1>Inserisci nuovo prodotto</h1>
-            <div className="w-full flex flex-col gap-8 border rounded p-4">
+            <div className="w-full flex flex-col gap-8 border rounded-xl p-8 shadow-xl">
                 <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
                     <label htmlFor="country">Paese</label>
                     <select name="country" id="country" className="w-60" onChange={handleInputData}>
