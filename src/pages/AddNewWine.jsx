@@ -35,6 +35,7 @@ const AddNewWine = () => {
             inputData.type === '' ||
             inputData.name === '' ||
             inputData.year === null ||
+            (inputData && inputData.year.length !== 4) ||
             inputData.tablePrice === null ||
             inputData.tablePrice === '' ||
             inputData.takeAwayPrice === null ||
@@ -126,6 +127,7 @@ const AddNewWine = () => {
                     <input type="number" id="year" className="w-36" onChange={handleInputData} />
                 </div>
                 <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.year ? 'hidden' : ''}`}>Inserisci l'annata</h4>
+                <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || (inputData.year && inputData.year.length === 4) ? 'hidden' : ''}`}>L'anno deve avere 4 cifre</h4>
 
                 <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                     <label htmlFor="price">Prezzo</label>
