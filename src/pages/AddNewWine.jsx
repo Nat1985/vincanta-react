@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import FetchLoader from '../components/FetchLoader.jsx';
 
 const AddNewWine = () => {
 
@@ -12,7 +13,7 @@ const AddNewWine = () => {
         year: null,
         tablePrice: null,
         takeAwayPrice: null,
-        description: '',
+        description: null,
     })
 
     const handleInputData = (event) => {
@@ -26,7 +27,13 @@ const AddNewWine = () => {
     // Send fetch
     const [inputError, setInputError] = useState(false);
     const [fetchStatus, setFetchStatus] = useState('idle');
-    const sendFetch = () => {
+    const [errorMessage, setErrorMessage] = useState(null);
+    useEffect(() => {
+        console.log(fetchStatus);
+        console.log(inputError);
+        console.log(errorMessage);
+    }, [fetchStatus, inputError, errorMessage])
+    const sendFetch = async () => {
         setInputError(false);
         if (
             inputData.country === '' ||
@@ -44,23 +51,37 @@ const AddNewWine = () => {
             setInputError(true)
         } else {
             try {
-                setFetchStatus('succeeded');
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 2000)
+                setFetchStatus('loading');
+                const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/add-new-wine`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(inputData)
+                })
+                if(response.ok) {
+                    setFetchStatus('succeeded');
+                    setTimeout(() => {
+                        window.location.href = "/";
+                    }, 2000)
+                } else {
+                    const error = await response.json();
+                    setErrorMessage(error.message);
+                    setFetchStatus('failed');
+                }
             } catch (error) {
-                setFetchStatus('failed')
+                setErrorMessage(error.message);
+                setFetchStatus('failed');
             }
         }
     }
     useEffect(() => {
-        console.log('inputData: ', inputData);
-        console.log('inputError: ', inputError);
-    }, [inputData, inputError])
+        console.log('inputData: ', inputData)
+    }, [inputData])
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8">
-            <h1>Inserisci nuovo prodotto</h1>
-            <div className="w-full flex flex-col gap-8 border rounded-xl p-8 shadow-xl">
+            <h2>Inserisci nuovo prodotto</h2>
+            <div className="min-w-[340px] md:w-[600px] flex flex-col gap-8 border rounded-xl p-8">
                 <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
                     <label htmlFor="country">Paese</label>
                     <select name="country" id="country" className="w-60" onChange={handleInputData}>
@@ -149,8 +170,10 @@ const AddNewWine = () => {
                     <textarea name="description" id="description" cols="30" rows="10" placeholder="opzionale" onChange={handleInputData} />
                 </div>
 
+                {fetchStatus === 'loading' && <FetchLoader />}
                 {inputError && <h4 className="mt-8">Dati mancanti, ricontrolla e riprova.</h4>}
                 {!inputError && fetchStatus === 'succeeded' && <h4 className="mt-8">Prodotto salvato correttamente.</h4>}
+                {fetchStatus === 'failed' && <h4 className="mt-8">Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
                 {fetchStatus === 'idle' && <button className="self-center" onClick={sendFetch}>Salva prodotto</button>}
 
             </div>
