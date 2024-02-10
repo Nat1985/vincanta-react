@@ -7,6 +7,7 @@ const AddNewWine = () => {
     const [inputData, setInputData] = useState({
         country: '',
         region: '',
+        city: '',
         company: '',
         type: '',
         name: '',
@@ -63,7 +64,7 @@ const AddNewWine = () => {
                     setFetchStatus('succeeded');
                     setTimeout(() => {
                         window.location.href = "/";
-                    }, 2000)
+                    }, 3000)
                 } else {
                     const error = await response.json();
                     setErrorMessage(error.message);
@@ -121,6 +122,12 @@ const AddNewWine = () => {
                 <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.region !== '' ? 'hidden' : ''}`}>Inserisci la regione</h4>
 
                 <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
+                    <label htmlFor="city">Paese</label>
+                    <input type="text" id="city" onChange={handleInputData} />
+                </div>
+                <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.city !== '' ? 'hidden' : ''}`}>Inserisci il paese</h4>
+
+                <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                     <label htmlFor="company">Nome azienda</label>
                     <input type="text" id="company" onChange={handleInputData} />
                 </div>
@@ -139,7 +146,7 @@ const AddNewWine = () => {
 
                 <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                     <label htmlFor="name">Nome vino</label>
-                    <input type="text" id="name" onChange={handleInputData} />
+                    <input type="text" id="name" className="md:w-[400px]" onChange={handleInputData} />
                 </div>
                 <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.name !== '' ? 'hidden' : ''}`}>Inserisci il nome del vino</h4>
 
@@ -173,6 +180,7 @@ const AddNewWine = () => {
                 {fetchStatus === 'loading' && <FetchLoader />}
                 {inputError && <h4 className="mt-8">Dati mancanti, ricontrolla e riprova.</h4>}
                 {!inputError && fetchStatus === 'succeeded' && <h4 className="mt-8">Prodotto salvato correttamente.</h4>}
+                {!inputError && fetchStatus === 'succeeded' && <h5 className="text-[#782a76] mt-[-20px]">Attendi il refresh della pagina.</h5>}
                 {fetchStatus === 'failed' && <h4 className="mt-8">Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
                 {fetchStatus === 'idle' && <button className="self-center" onClick={sendFetch}>Salva prodotto</button>}
 

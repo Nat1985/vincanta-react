@@ -23,6 +23,10 @@ h4 {
   font-size: 1.5rem;
 }
 
+h5 {
+  font-size: 1rem;
+}
+
 label {
   font-size: 1.5rem;
 }
@@ -86,4 +90,7 @@ button {
     conic-gradient(#0000 30%,#782a76);
   -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
   animation:s3 1s infinite linear;
+}
+@keyframes s3{ 
+  100%{transform: rotate(1turn)}
 }
