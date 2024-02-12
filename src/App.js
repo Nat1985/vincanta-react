@@ -5,11 +5,13 @@ import WinesPaper from './pages/WinesPaper.jsx';
 import logo from './static/images/logo.png';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
+import ScrollToTopButton from './components/ScrollTotopButton.jsx';
 
 function App() {
   return (
     <Router>
       <Menu />
+      <ScrollToTopButton />
       <div className="w-full flex flex-col items-center p-4">
         <img src={logo} alt="Vincanta logo" width='100px' />
       </div>
