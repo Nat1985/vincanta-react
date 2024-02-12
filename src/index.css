@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "~@flaticon/flaticon-uicons/css/all/all";
+
 body {
   font-size: 1.5rem;
 }
@@ -74,11 +76,9 @@ textarea:focus {
 }
 
 button {
-  background-color: #782a76;
   border-radius: 4px;
   width: fit-content;
-  padding: 8px 16px;
-  color: white;
+  padding: 4px 8px;
 }
 
 .custom-loader {

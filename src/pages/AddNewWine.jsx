@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import FetchLoader from '../components/FetchLoader.jsx';
+import { PrimaryButton } from "../components/buttons.jsx";
 
 const AddNewWine = () => {
 
     // Handle input data
     const [inputData, setInputData] = useState({
-        country: '',
+        country: 'italy',
         region: '',
         city: '',
         company: '',
@@ -60,11 +61,9 @@ const AddNewWine = () => {
                     },
                     body: JSON.stringify(inputData)
                 })
-                if(response.ok) {
+                if (response.ok) {
                     setFetchStatus('succeeded');
-                    setTimeout(() => {
-                        window.location.href = "/";
-                    }, 3000)
+                    window.location.href = "/";
                 } else {
                     const error = await response.json();
                     setErrorMessage(error.message);
@@ -83,7 +82,7 @@ const AddNewWine = () => {
         <div className="flex flex-col items-center text-center gap-8 mt-8">
             <h2>Inserisci nuovo prodotto</h2>
             <div className="min-w-[340px] md:w-[600px] flex flex-col gap-8 border rounded-xl p-8">
-                <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+                {/* <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
                     <label htmlFor="country">Paese</label>
                     <select name="country" id="country" className="w-60" onChange={handleInputData}>
                         <option value="" disabled selected hidden></option>
@@ -91,7 +90,7 @@ const AddNewWine = () => {
                         <option value="france">Francia</option>
                     </select>
                 </div>
-                <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.country !== '' ? 'hidden' : ''}`}>Inserisci il paese</h4>
+                <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.country !== '' ? 'hidden' : ''}`}>Inserisci il paese</h4> */}
 
                 <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                     <label htmlFor="region">Regione</label>
@@ -140,6 +139,7 @@ const AddNewWine = () => {
                         <option value="red">Rosso</option>
                         <option value="white">Bianco</option>
                         <option value="rosé">Rosé</option>
+                        <option value="bubbles">Bolle</option>
                     </select>
                 </div>
                 <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.type !== '' ? 'hidden' : ''}`}>Inserisci il genere</h4>
@@ -182,8 +182,7 @@ const AddNewWine = () => {
                 {!inputError && fetchStatus === 'succeeded' && <h4 className="mt-8">Prodotto salvato correttamente.</h4>}
                 {!inputError && fetchStatus === 'succeeded' && <h5 className="text-[#782a76] mt-[-20px]">Attendi il refresh della pagina.</h5>}
                 {fetchStatus === 'failed' && <h4 className="mt-8">Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
-                {fetchStatus === 'idle' && <button className="self-center" onClick={sendFetch}>Salva prodotto</button>}
-
+                {fetchStatus === 'idle' && <PrimaryButton text="Salva prodotto" click={sendFetch} />}
             </div>
         </div>
     )
