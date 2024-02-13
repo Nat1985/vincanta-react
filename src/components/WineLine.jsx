@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DangerButton, GreenButton, PrimaryButton, SecondaryButton } from "./buttons";
 
@@ -34,7 +35,7 @@ const WineLine = ({ wineData }) => {
                     isEditing &&
                     <div className="flex gap-2 p-1 items-center">
                         <div className="text-sm">Vuoi modificare <span className="text-green-500 font-bold">{wineData.name}</span>?</div>
-                        <GreenButton text="Modifica prodotto" />
+                        <Link to={`/add-new-product?wineId=${wineData._id}`} ><GreenButton text="Modifica prodotto" /></Link>
                         <SecondaryButton text="Annulla" click={() => setIsEditing(false)} />
                     </div>
                 }

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 const ScrollToTopButton = () => {
     const [isVisible, setIsVisible] = useState(false);
     const handleVisibility = () => {
-        console.log('here')
         const scrollY = window.scrollY;
         const triggerPoint = 1000;
         setIsVisible(scrollY > triggerPoint);
