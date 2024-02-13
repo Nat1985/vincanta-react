@@ -103,12 +103,13 @@ const AddNewWine = () => {
                 setFetchStatus('loading');
                 const fetchUrl = wineToEdit ? `${process.env.REACT_APP_SERVER_BASE_URL}/wines/edit-wine` : `${process.env.REACT_APP_SERVER_BASE_URL}/wines/add-new-wine`
                 const fetchMethod = wineToEdit ? 'PATCH' : 'POST';
+                const setBody = wineToEdit ? {id: wineToEdit, data: inputData} : inputData
                 const response = await fetch(fetchUrl, {
                     method: fetchMethod,
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({id: wineToEdit, data: inputData})
+                    body: JSON.stringify(setBody)
                 })
                 if (response.ok) {
                     setFetchStatus('succeeded');

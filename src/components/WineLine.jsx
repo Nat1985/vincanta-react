@@ -2,11 +2,35 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DangerButton, GreenButton, PrimaryButton, SecondaryButton } from "./buttons";
+import FetchLoader from "./FetchLoader";
 
 const WineLine = ({ wineData }) => {
     const mode = useSelector(state => state.mode);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+
+    // Delete fetch
+    const [deleteFetchStatus, setDeleteFetchStatus] = useState('idle');
+    const sendDeleteFetch = async () => {
+        try {
+            setDeleteFetchStatus('loading');
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/delete-wine`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ wineId: wineData._id })
+            });
+            if (response.ok) {
+                setDeleteFetchStatus('succeeded');
+                window.location.href = "/";
+            } else {
+                setDeleteFetchStatus('failed');
+            }
+        } catch (error) {
+            setDeleteFetchStatus('failed');
+        }
+    }
     return (
 
         !isEditing && !isDeleting ? (
@@ -42,9 +66,13 @@ const WineLine = ({ wineData }) => {
                 {
                     isDeleting &&
                     <div className="flex gap-2 p-1 items-center">
-                        <div className="text-sm">Sei sicuro di voler eliminare <span className="text-red-500 font-bold">{wineData.name}</span>?</div>
-                        <DangerButton text="Elimina prodotto" />
-                        <SecondaryButton text="Annulla" click={() => setIsDeleting(false)} />
+                        {deleteFetchStatus === 'idle' && <div className="text-sm">Sei sicuro di voler eliminare <span className="text-red-500 font-bold">{wineData.name}</span>?</div>}
+                        {deleteFetchStatus === 'idle' && <DangerButton text="Elimina prodotto" click={sendDeleteFetch} />}
+                        {deleteFetchStatus === 'idle' && <SecondaryButton text="Annulla" click={() => setIsDeleting(false)} />}
+                        {deleteFetchStatus === 'loading' && <FetchLoader />}
+                        {deleteFetchStatus === 'succeded' && <h4>Prodotto eliminato correttamente.</h4>}
+                        {deleteFetchStatus === 'succeded' && <h5 className="text-[#782a76] mt-[-20px]">Attendi il refresh della pagina.</h5>}
+                        {deleteFetchStatus === 'failed' && <h4>Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
                     </div>
                 }
             </div>
