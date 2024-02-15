@@ -65,7 +65,7 @@ const WinesPaper = () => {
             {mode.mode === 'show' && <img src={wineSelection} />}
 
                 {/* Region buttons */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap justify-center">
                     {
                         uniqueRegions.map(element => (
                             <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
