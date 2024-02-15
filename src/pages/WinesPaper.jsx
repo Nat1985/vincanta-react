@@ -3,6 +3,7 @@ import FetchLoader from "../components/FetchLoader.jsx";
 import CompanyCard from "../components/CompanyCard.jsx";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import wineSelection from '../static/images/wine_selection.png'
 
 const WinesPaper = () => {
     // Wine data fetch
@@ -45,7 +46,8 @@ const WinesPaper = () => {
     }, [winesData])
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8 w-full px-4">
-            <h2>Carta dei vini</h2>
+            {/* <h2>Carta dei vini</h2> */}
+            <img src={wineSelection} />
             {
                 mode.mode === 'edit' &&
                 <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
@@ -60,7 +62,7 @@ const WinesPaper = () => {
                     fetchStatus === 'succeeded' &&
                     winesData &&
                     winesData.map((element, index) => (
-                        <div key={index} className="w-full flex flex-col gap-2">
+                        <div key={index} className="w-full flex flex-col gap-2 items-center">
                             <h2>{element.region}</h2>
                             {
                                 element.data.map((company, companyIndex) => (

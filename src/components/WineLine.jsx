@@ -34,7 +34,7 @@ const WineLine = ({ wineData }) => {
     return (
 
         !isEditing && !isDeleting ? (
-            <div className="flex flex-col md:flex-row justify-between gap-2">
+            <div className={`flex flex-col md:flex-row justify-between gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0 ${mode.mode === 'edit' ? 'bg-fuchsia-50 md:p-2' : ''}`}>
                 <div className="flex gap-4 text-start">
                     {mode.mode === 'edit' &&
                         <div className="flex gap-4">
@@ -48,16 +48,25 @@ const WineLine = ({ wineData }) => {
                     </div>
                 </div>
                 <div className="flex gap-4">
-                    <div className="w-[60px]">{wineData.year}</div>
-                    <div className="w-[60px]">{wineData.tablePrice}</div>
-                    <div className="w-[60px]">{wineData.takeAwayPrice}</div>
+                    <div className="flex flex-col">
+                        <div className="md:hidden text-xs text-red-500 mb-[-5px]">Annata</div>
+                        <div className="w-[60px]">{wineData.year}</div>
+                    </div>
+                    <div className="flex flex-col">
+                    <div className="md:hidden text-xs text-red-500 mb-[-5px]">Tavolo</div>
+                        <div className="w-[60px]">{wineData.tablePrice}</div>
+                    </div>
+                    <div className="flex flex-col">
+                    <div className="md:hidden text-xs text-red-500 mb-[-5px]">Asporto</div>
+                        <div className="w-[60px]">{wineData.takeAwayPrice}</div>
+                    </div>
                 </div>
             </div>
         ) : (
-            <div className={`flex flex-col md:flex-row justify-center gap-2`}>
+            <div className={`flex flex-col md:flex-row justify-center gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0`}>
                 {
                     isEditing &&
-                    <div className="flex gap-2 p-1 items-center">
+                    <div className="flex flex-col md:flex-row gap-2 p-1 items-center">
                         <div className="text-sm">Vuoi modificare <span className="text-green-500 font-bold">{wineData.name}</span>?</div>
                         <Link to={`/add-new-product?wineId=${wineData._id}`} ><GreenButton text="Modifica prodotto" /></Link>
                         <SecondaryButton text="Annulla" click={() => setIsEditing(false)} />
@@ -65,7 +74,7 @@ const WineLine = ({ wineData }) => {
                 }
                 {
                     isDeleting &&
-                    <div className="flex gap-2 p-1 items-center">
+                    <div className="flex flex-col md:flex-row gap-2 p-1 items-center">
                         {deleteFetchStatus === 'idle' && <div className="text-sm">Sei sicuro di voler eliminare <span className="text-red-500 font-bold">{wineData.name}</span>?</div>}
                         {deleteFetchStatus === 'idle' && <DangerButton text="Elimina prodotto" click={sendDeleteFetch} />}
                         {deleteFetchStatus === 'idle' && <SecondaryButton text="Annulla" click={() => setIsDeleting(false)} />}
