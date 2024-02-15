@@ -40,14 +40,39 @@ const WinesPaper = () => {
     // Check mode
     const mode = useSelector(state => state.mode)
 
+    // Handle region for scroll button
+    const [uniqueRegions, setUniqueRegions] = useState([]);
+    useEffect(() => {
+        if (winesData) {
+            const regions = Array.from(new Set(winesData.map(element => element.region)));
+            setUniqueRegions(regions);
+        }
+    }, [winesData])
+    const scrollToRegion = (region) => {
+        const regionRef = document.getElementById(region);
+        if (regionRef) {
+            regionRef.scrollIntoView({ behavior: 'smooth' })
+        }
+    }
+
     //Debug
     useEffect(() => {
         console.log('winesData: ', winesData)
     }, [winesData])
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8 w-full px-4">
-            {/* <h2>Carta dei vini</h2> */}
-            <img src={wineSelection} />
+            {mode.mode === 'edit' && <h2>Gestisci prodotti</h2>}
+            {mode.mode === 'show' && <img src={wineSelection} />}
+
+                {/* Region buttons */}
+                <div className="flex gap-2">
+                    {
+                        uniqueRegions.map(element => (
+                            <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
+                        ))
+                    }
+                </div>
+
             {
                 mode.mode === 'edit' &&
                 <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
@@ -62,7 +87,7 @@ const WinesPaper = () => {
                     fetchStatus === 'succeeded' &&
                     winesData &&
                     winesData.map((element, index) => (
-                        <div key={index} className="w-full flex flex-col gap-2 items-center">
+                        <div key={index} className="w-full flex flex-col gap-2 items-center" id={element.region}>
                             <h2>{element.region}</h2>
                             {
                                 element.data.map((company, companyIndex) => (
