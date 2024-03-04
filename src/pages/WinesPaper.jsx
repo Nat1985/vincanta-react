@@ -43,8 +43,16 @@ const WinesPaper = () => {
     // Handle region for scroll button
     const [uniqueRegions, setUniqueRegions] = useState([]);
     useEffect(() => {
+        const extractRegions = (data) => {
+            return data.flatMap((element => {
+                if(element.data) {
+                    return element.region ? [element.region, ...extractRegions(element.data)] : extractRegions(element.data);
+                }
+                return element.region ? [element.region] : [];
+            }))
+        }
         if (winesData) {
-            const regions = Array.from(new Set(winesData.map(element => element.region)));
+            const regions = Array.from(new Set(winesData.flatMap(element => extractRegions(element.data))));
             setUniqueRegions(regions);
         }
     }, [winesData])
@@ -54,6 +62,10 @@ const WinesPaper = () => {
             regionRef.scrollIntoView({ behavior: 'smooth' })
         }
     }
+    // Debug
+    useEffect(() => {
+        console.log('uniqueRegions: ', uniqueRegions)
+    }, [uniqueRegions])
 
     //Debug
     useEffect(() => {
@@ -64,14 +76,14 @@ const WinesPaper = () => {
             {mode.mode === 'edit' && <h2>Gestisci prodotti</h2>}
             {mode.mode === 'show' && <img src={wineSelection} />}
 
-                {/* Region buttons */}
-                <div className="flex gap-2 flex-wrap justify-center">
-                    {
-                        uniqueRegions.map(element => (
-                            <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
-                        ))
-                    }
-                </div>
+            {/* Region buttons */}
+            <div className="flex gap-2 flex-wrap justify-center">
+                {
+                    uniqueRegions.map(element => (
+                        <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
+                    ))
+                }
+            </div>
 
             {
                 mode.mode === 'edit' &&
@@ -87,11 +99,19 @@ const WinesPaper = () => {
                     fetchStatus === 'succeeded' &&
                     winesData &&
                     winesData.map((element, index) => (
-                        <div key={index} className="w-full flex flex-col gap-2 items-center" id={element.region}>
-                            <h2>{element.region}</h2>
+                        <div className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center">
+                            {index !== 0 && <hr className="w-full"/>}
+                            <h1>{element.country}</h1>
                             {
-                                element.data.map((company, companyIndex) => (
-                                    <CompanyCard key={companyIndex} data={company} />
+                                element.data.map((region, regionIndex) => (
+                                    <div key={regionIndex} className="w-full flex flex-col gap-2 items-center" id={region.region}>
+                                        <h2>{region.region}</h2>
+                                        {
+                                            region.data.map((company, companyIndex) => (
+                                                <CompanyCard key={companyIndex} data={company} />
+                                            ))
+                                        }
+                                    </div>
                                 ))
                             }
                         </div>

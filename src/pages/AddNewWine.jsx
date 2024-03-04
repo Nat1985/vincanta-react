@@ -40,17 +40,23 @@ const AddNewWine = () => {
 
     // Handle input data
     const [inputData, setInputData] = useState({
-        country: 'italy',
+        country: '',
         region: '',
         city: '',
         company: '',
         type: '',
         name: '',
         year: null,
+        volume: "75 CL",
         tablePrice: null,
         takeAwayPrice: null,
+        award: false,
         description: null,
     })
+    // debug
+    useEffect(() => {
+        console.log('inputData: ', inputData);
+    }, [inputData])
     useEffect(() => {
         if (wineToEdit) {
             if (wineData) {
@@ -62,8 +68,10 @@ const AddNewWine = () => {
                     type: wineData.type,
                     name: wineData.name,
                     year: wineData.year,
+                    volume: wineData.volume,
                     tablePrice: wineData.tablePrice,
                     takeAwayPrice: wineData.takeAwayPrice,
+                    award: wineData.award,
                     description: wineData.description,
                 })
             }
@@ -71,10 +79,11 @@ const AddNewWine = () => {
     }, [wineToEdit, wineData])
 
     const handleInputData = (event) => {
-        const { id, value } = event.target;
+        const { id, value, type, checked } = event.target;
+        const inputValue = type === 'checkbox' ? checked : value;
         setInputData(prevData => ({
             ...prevData,
-            [id]: value
+            [id]: inputValue
         }))
     }
 
@@ -103,7 +112,7 @@ const AddNewWine = () => {
                 setFetchStatus('loading');
                 const fetchUrl = wineToEdit ? `${process.env.REACT_APP_SERVER_BASE_URL}/wines/edit-wine` : `${process.env.REACT_APP_SERVER_BASE_URL}/wines/add-new-wine`
                 const fetchMethod = wineToEdit ? 'PATCH' : 'POST';
-                const setBody = wineToEdit ? {id: wineToEdit, data: inputData} : inputData
+                const setBody = wineToEdit ? { id: wineToEdit, data: inputData } : inputData
                 const response = await fetch(fetchUrl, {
                     method: fetchMethod,
                     headers: {
@@ -135,48 +144,62 @@ const AddNewWine = () => {
                     <FetchLoader />
                 ) : (
                     <>
-                        
+
                         {!wineToEdit && <h2>Inserisci nuovo prodotto</h2>}
                         {wineToEdit && wineData && <h3>Modifica <span className="text-[#782a76]">{wineData.name}</span></h3>}
                         {wineToEdit && wineData && <h3 className="mt-[-30px]">di <span className="text-[#782a76]">{wineData.company}</span></h3>}
                         <div className="min-w-[340px] md:w-[600px] flex flex-col gap-8 border rounded-xl p-8">
-                            {/* <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-                    <label htmlFor="country">Paese</label>
-                    <select name="country" id="country" className="w-60" onChange={handleInputData} value={inputData.country}>
-                        <option value="" disabled selected hidden></option>
-                        <option value="italy">Italia</option>
-                        <option value="france">Francia</option>
-                    </select>
-                </div>
-                <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.country !== '' ? 'hidden' : ''}`}>Inserisci il paese</h4> */}
 
-                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
+                            <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+                                <label htmlFor="country">Nazione</label>
+                                <select name="country" id="country" className="w-60" onChange={handleInputData} value={inputData.country}>
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="Australia">Australia</option>
+                                    <option value="Austria">Austria</option>
+                                    <option value="Italia">Italia</option>
+                                    <option value="Francia">Francia</option>
+                                    <option value="Germania">Germania</option>
+                                    <option value="Grecia">Grecia</option>
+                                    <option value="Portogallo">Portogallo</option>
+                                    <option value="Spagna">Spagna</option>
+                                    <option value="USA">USA</option>
+                                </select>
+                            </div>
+                            <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.country !== '' ? 'hidden' : ''}`}>Inserisci il paese</h4>
+
+                            {(inputData.country === 'Italia' || inputData.country === 'Francia') && <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="region">Regione</label>
                                 <select name="region" id="region" className="w-60" onChange={handleInputData} value={inputData.region}>
                                     <option value="" disabled selected hidden></option>
-                                    <option value="Abruzzo">Abruzzo</option>
-                                    <option value="Basilicata">Basilicata</option>
-                                    <option value="Calabria">Calabria</option>
-                                    <option value="Campania">Campania</option>
-                                    <option value="Emilia Romagna">Emilia Romagna</option>
-                                    <option value="Friuli Venezia Giulia">Friuli Venezia Giulia</option>
-                                    <option value="Lazio">Lazio</option>
-                                    <option value="Liguria">Liguria</option>
-                                    <option value="Lombardia">Lombardia</option>
-                                    <option value="Marche">Marche</option>
-                                    <option value="Molise">Molise</option>
-                                    <option value="Piemonte">Piemonte</option>
-                                    <option value="Puglia">Puglia</option>
-                                    <option value="Sardegna">Sardegna</option>
-                                    <option value="Sicilia">Sicilia</option>
-                                    <option value="Toscana">Toscana</option>
-                                    <option value="Trentino Alto Adige">Trentino Alto Adige</option>
-                                    <option value="Umbria">Umbria</option>
-                                    <option value="Valle d'Aosta">Valle d'Aosta</option>
-                                    <option value="Veneto">Veneto</option>
+                                    {inputData && inputData.country === "Italia" && <option value="Abruzzo">Abruzzo</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Alto Adige">Alto Adige</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Basilicata">Basilicata</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Calabria">Calabria</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Campania">Campania</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Emilia Romagna">Emilia Romagna</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Friuli Venezia Giulia">Friuli Venezia Giulia</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Lazio">Lazio</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Liguria">Liguria</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Lombardia">Lombardia</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Marche">Marche</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Molise">Molise</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Piemonte">Piemonte</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Puglia">Puglia</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Sardegna">Sardegna</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Sicilia">Sicilia</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Toscana">Toscana</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Trentino">Trentino</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Umbria">Umbria</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Valle d'Aosta">Valle d'Aosta</option>}
+                                    {inputData && inputData.country === "Italia" && <option value="Veneto">Veneto</option>}
+                                    {inputData && inputData.country === "Francia" && <option value="Provence">Provence</option>}
+                                    {inputData && inputData.country === "Francia" && <option value="Bordeaux">Bordeaux</option>}
+                                    {inputData && inputData.country === "Francia" && <option value="Cote Du Rhone">Cote Du Rhone</option>}
+                                    {inputData && inputData.country === "Francia" && <option value="Borgogna">Borgogna</option>}
+                                    {inputData && inputData.country === "Francia" && <option value="Loira">Loira</option>}
                                 </select>
-                            </div>
-                            <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.region !== '' ? 'hidden' : ''}`}>Inserisci la regione</h4>
+                            </div>}
+                            {(inputData.country === 'italy' || inputData.country === 'france') && <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.region !== '' ? 'hidden' : ''}`}>Inserisci la regione</h4>}
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="city">Paese</label>
@@ -197,7 +220,9 @@ const AddNewWine = () => {
                                     <option value="red">Rosso</option>
                                     <option value="white">Bianco</option>
                                     <option value="rosé">Rosé</option>
-                                    <option value="bubbles">Bolle</option>
+                                    <option value="bubbles">Spumanti</option>
+                                    <option value="dessert">Vini da dessert</option>
+                                    {inputData.country === 'Francia' && <option value="champagne">CHAMPAGNE</option>}
                                 </select>
                             </div>
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.type !== '' ? 'hidden' : ''}`}>Inserisci il genere</h4>
@@ -216,6 +241,19 @@ const AddNewWine = () => {
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || (inputData.year && inputData.year.toString().length === 4) ? 'hidden' : ''}`}>L'anno deve avere 4 cifre</h4>
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
+                                <label htmlFor="volume">Volume</label>
+                                <select name="volume" id="volume" className="w-60" onChange={handleInputData} value={inputData.volume} >
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="35 CL" >35 CL</option>
+                                    <option value="50 CL">50 CL</option>
+                                    <option value="75 CL">75 CL</option>
+                                    <option value="1 L">1 L</option>
+                                    <option value="3 L">3 L</option>
+                                    <option value="5 L">5 L</option>
+                                </select>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="price">Prezzo</label>
                                 <div className="flex gap-2">
                                     <div className="flex flex-col">
@@ -230,6 +268,11 @@ const AddNewWine = () => {
                             </div>
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || (inputData.tablePrice && inputData.takeAwayPrice) ? 'hidden' : ''}`}>Inserisci entrambi i prezzi</h4>
 
+                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
+                                <label htmlFor="volume">Award</label>
+                                <input type="checkbox" id="award" className="w-6 h-6" onChange={handleInputData} checked={inputData.award} />
+                            </div>
+
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="description">Note</label>
                                 <textarea name="description" id="description" cols="30" rows="10" placeholder="opzionale" onChange={handleInputData} value={inputData.description} />
@@ -243,7 +286,7 @@ const AddNewWine = () => {
                             {fetchStatus === 'failed' && <h4 className="mt-8">Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
                             {fetchStatus === 'idle' && <PrimaryButton text="Salva prodotto" click={sendFetch} />}
                         </div>
-                        
+
                     </>
                 )
             }

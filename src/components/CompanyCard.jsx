@@ -14,6 +14,7 @@ const CompanyCard = ({ data }) => {
             {/* Elenco vini */}
             <div className="w-full flex flex-col">
                 <div className="w-full hidden md:flex gap-4 justify-end text-xs text-red-500">
+                    {/* <div>q.tà</div> */}
                     <div className="w-[60px]">annata</div>
                     <div className="w-[60px]">tavolo</div>
                     <div className="w-[60px]">asporto</div>

@@ -4,6 +4,12 @@ import { useSelector } from "react-redux";
 import { DangerButton, GreenButton, PrimaryButton, SecondaryButton } from "./buttons";
 import FetchLoader from "./FetchLoader";
 
+import redIcon from '../static/images/red.png';
+import whiteIcon from '../static/images/white.png';
+import bubblesIcon from '../static/images/bubbles.png';
+import roseIcon from '../static/images/rose.png';
+import champagneIcon from '../static/images/champagne.png';
+
 const WineLine = ({ wineData }) => {
     const mode = useSelector(state => state.mode);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -43,21 +49,35 @@ const WineLine = ({ wineData }) => {
                         </div>
                     }
                     <div className="flex flex-col">
-                        <div>{wineData.name}</div>
-                        <div className="text-xs">{wineData.description}</div>
+                        <div className="flex gap-1">
+                            <div className="pt-[5px]">
+                                {wineData && wineData.type === 'red' && <img src={redIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'white' && <img src={whiteIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'bubbles' && <img src={bubblesIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'rose' && <img src={roseIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'champagne' && <img src={champagneIcon} className="w-6 h-6" />}
+                            </div>
+                            <div>{wineData.name}</div>
+                            <div className="pt-[5px]">{wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}</div>
+                        </div>
+                        <div className="text-xs ml-2 md:ml-7">{wineData.description}</div>
                     </div>
                 </div>
                 <div className="flex gap-4">
+                    <div className="flex flex-col">
+                        {/* <div className="md:hidden text-xs text-red-500 mb-[-5px]">q.tà</div> */}
+                        <div className="text-xs flex mt-5 md:mt-3">{wineData.volume}</div>
+                    </div>
                     <div className="flex flex-col">
                         <div className="md:hidden text-xs text-red-500 mb-[-5px]">Annata</div>
                         <div className="w-[60px]">{wineData.year}</div>
                     </div>
                     <div className="flex flex-col">
-                    <div className="md:hidden text-xs text-red-500 mb-[-5px]">Tavolo</div>
+                        <div className="md:hidden text-xs text-red-500 mb-[-5px]">Tavolo</div>
                         <div className="w-[60px]">{wineData.tablePrice}</div>
                     </div>
                     <div className="flex flex-col">
-                    <div className="md:hidden text-xs text-red-500 mb-[-5px]">Asporto</div>
+                        <div className="md:hidden text-xs text-red-500 mb-[-5px]">Asporto</div>
                         <div className="w-[60px]">{wineData.takeAwayPrice}</div>
                     </div>
                 </div>
