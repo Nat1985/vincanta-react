@@ -14,7 +14,7 @@ const Menu = () => {
         <div className='fixed top-2 right-2'>
             {
                 showMenu ? (
-                    <div className="flex flex-col gap-2 border-2 border-[#782a76] bg-white p-2 rounded-xl">
+                    <div className="flex flex-col gap-2 border-2 border-[#782a76] bg-white bg-opacity-90 p-2 rounded-xl">
                         <i class="fi fi-ss-circle-xmark text-end text-[#782a76] cursor-pointer" onClick={() => setShowMenu(0)}></i>
                         <div className="list-none text-center mx-4 text-[#782a76] leading-[50px]">
                             <Link to="/"><div className="cursor-pointer bg-[#782a76] text-white px-2 rounded" onClick={() => {handleMode('show'); setShowMenu(0)}}>Carta dei vini</div></Link>
