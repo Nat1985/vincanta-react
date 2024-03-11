@@ -4,16 +4,23 @@ import CompanyCard from "../components/CompanyCard.jsx";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import wineSelection from '../static/images/wine_selection.png'
+import TypeBar from "../components/TypeBar.jsx";
+import SearchBar from "../components/SearchBar.jsx";
 
 const WinesPaper = () => {
+    // Check mode and type
+    const mode = useSelector(state => state.mode)
+    const selectedType = useSelector(state => state.type);
+
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
     const [fetchStatus, setFetchStatus] = useState('idle');
     const [error, setError] = useState(null);
     const winesDataFetch = async () => {
         setFetchStatus('loading');
+        let extendedUrl = selectedType.type;
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?type=${extendedUrl}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,17 +42,14 @@ const WinesPaper = () => {
     }
     useEffect(() => {
         winesDataFetch();
-    }, [])
-
-    // Check mode
-    const mode = useSelector(state => state.mode)
+    }, [selectedType])
 
     // Handle region for scroll button
     const [uniqueRegions, setUniqueRegions] = useState([]);
     useEffect(() => {
         const extractRegions = (data) => {
             return data.flatMap((element => {
-                if(element.data) {
+                if (element.data) {
                     return element.region ? [element.region, ...extractRegions(element.data)] : extractRegions(element.data);
                 }
                 return element.region ? [element.region] : [];
@@ -76,14 +80,23 @@ const WinesPaper = () => {
             {mode.mode === 'edit' && <h2>Gestisci prodotti</h2>}
             {mode.mode === 'show' && <img src={wineSelection} />}
 
+            {/* Type select */}
+            <TypeBar />
+
             {/* Region buttons */}
-            <div className="flex gap-2 flex-wrap justify-center">
-                {
-                    uniqueRegions.map(element => (
-                        <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
-                    ))
-                }
+            <div className="flex flex-col gap-2 items-center">
+                <h2 className="font-thin">Regioni:</h2>
+                <div className="flex flex-wrap gap-2 justify-center">
+                    {
+                        uniqueRegions.map(element => (
+                            <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
+                        ))
+                    }
+                </div>
             </div>
+
+            {/* Search Bar */}
+            <SearchBar />
 
             {
                 mode.mode === 'edit' &&
@@ -100,7 +113,7 @@ const WinesPaper = () => {
                     winesData &&
                     winesData.map((element, index) => (
                         <div className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center">
-                            {index !== 0 && <hr className="w-full"/>}
+                            {index !== 0 && <hr className="w-full" />}
                             <h1>{element.country}</h1>
                             {
                                 element.data.map((region, regionIndex) => (

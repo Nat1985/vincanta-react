@@ -9,6 +9,8 @@ import whiteIcon from '../static/images/white.png';
 import bubblesIcon from '../static/images/bubbles.png';
 import roseIcon from '../static/images/rose.png';
 import champagneIcon from '../static/images/champagne.png';
+import bubblesRoseIcon from '../static/images/bubbles_rose.png';
+import champagneRoseIcon from '../static/images/champagne_rose.png';
 
 const WineLine = ({ wineData }) => {
     const mode = useSelector(state => state.mode);
@@ -54,11 +56,16 @@ const WineLine = ({ wineData }) => {
                                 {wineData && wineData.type === 'red' && <img src={redIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'white' && <img src={whiteIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'bubbles' && <img src={bubblesIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'bubbles-rosé' && <img src={bubblesRoseIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'rose' && <img src={roseIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'champagne' && <img src={champagneIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'champagne-rosé' && <img src={champagneRoseIcon} className="w-6 h-6" />}
                             </div>
                             <div>{wineData.name}</div>
-                            <div className="pt-[5px]">{wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}</div>
+                            <div className="pt-[5px]">
+                                {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
+                                {wineData && wineData.favourite && <i class="fi fi-sr-heart text-red-500"></i>}
+                            </div>
                         </div>
                         <div className="text-xs ml-2 md:ml-7">{wineData.description}</div>
                     </div>

@@ -51,6 +51,8 @@ const AddNewWine = () => {
         tablePrice: null,
         takeAwayPrice: null,
         award: false,
+        sboccatura: false,
+        favourite: false,
         description: null,
     })
     // debug
@@ -72,6 +74,8 @@ const AddNewWine = () => {
                     tablePrice: wineData.tablePrice,
                     takeAwayPrice: wineData.takeAwayPrice,
                     award: wineData.award,
+                    sboccatura: wineData.sboccatura,
+                    favourite: wineData.favourite,
                     description: wineData.description,
                 })
             }
@@ -167,6 +171,23 @@ const AddNewWine = () => {
                             </div>
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.country !== '' ? 'hidden' : ''}`}>Inserisci il paese</h4>
 
+
+                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
+                                <label htmlFor="type">Genere</label>
+                                <select name="type" id="type" className="w-60" onChange={handleInputData} value={inputData.type} >
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="red">Rosso</option>
+                                    <option value="white">Bianco</option>
+                                    <option value="rosé">Rosé</option>
+                                    <option value="bubbles">Spumanti</option>
+                                    <option value="bubbles-rosé">Spumanti rosé</option>
+                                    <option value="dessert">Vini da dessert</option>
+                                    {inputData.country === 'Francia' && <option value="champagne">CHAMPAGNE</option>}
+                                    {inputData.country === 'Francia' && <option value="champagne-rosé">CHAMPAGNE ROSE'</option>}
+                                </select>
+                            </div>
+                            <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.type !== '' ? 'hidden' : ''}`}>Inserisci il genere</h4>
+
                             {(inputData.country === 'Italia' || inputData.country === 'Francia') && <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="region">Regione</label>
                                 <select name="region" id="region" className="w-60" onChange={handleInputData} value={inputData.region}>
@@ -192,11 +213,16 @@ const AddNewWine = () => {
                                     {inputData && inputData.country === "Italia" && <option value="Umbria">Umbria</option>}
                                     {inputData && inputData.country === "Italia" && <option value="Valle d'Aosta">Valle d'Aosta</option>}
                                     {inputData && inputData.country === "Italia" && <option value="Veneto">Veneto</option>}
-                                    {inputData && inputData.country === "Francia" && <option value="Provence">Provence</option>}
-                                    {inputData && inputData.country === "Francia" && <option value="Bordeaux">Bordeaux</option>}
-                                    {inputData && inputData.country === "Francia" && <option value="Cote Du Rhone">Cote Du Rhone</option>}
-                                    {inputData && inputData.country === "Francia" && <option value="Borgogna">Borgogna</option>}
-                                    {inputData && inputData.country === "Francia" && <option value="Loira">Loira</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Provence">Provence</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Bordeaux">Bordeaux</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Cote Du Rhone">Cote Du Rhone</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Borgogna">Borgogna</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Loira">Loira</option>}
+
+                                    {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Montagne de Reims">Montagne de Reims</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Côte des Blancs">Côte des Blancs</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Vallée de la Marne">Vallée de la Marne</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Côte Des Bar e Aube">Côte Des Bar e Aube</option>}
                                 </select>
                             </div>}
                             {(inputData.country === 'italy' || inputData.country === 'france') && <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.region !== '' ? 'hidden' : ''}`}>Inserisci la regione</h4>}
@@ -212,20 +238,6 @@ const AddNewWine = () => {
                                 <input type="text" id="company" onChange={handleInputData} value={inputData.company} />
                             </div>
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.company !== '' ? 'hidden' : ''}`}>Inserisci il nome dell'azienda</h4>
-
-                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
-                                <label htmlFor="type">Genere</label>
-                                <select name="type" id="type" className="w-60" onChange={handleInputData} value={inputData.type} >
-                                    <option value="" disabled selected hidden></option>
-                                    <option value="red">Rosso</option>
-                                    <option value="white">Bianco</option>
-                                    <option value="rosé">Rosé</option>
-                                    <option value="bubbles">Spumanti</option>
-                                    <option value="dessert">Vini da dessert</option>
-                                    {inputData.country === 'Francia' && <option value="champagne">CHAMPAGNE</option>}
-                                </select>
-                            </div>
-                            <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.type !== '' ? 'hidden' : ''}`}>Inserisci il genere</h4>
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="name">Nome vino</label>
@@ -247,7 +259,7 @@ const AddNewWine = () => {
                                     <option value="35 CL" >35 CL</option>
                                     <option value="50 CL">50 CL</option>
                                     <option value="75 CL">75 CL</option>
-                                    <option value="1 L">1 L</option>
+                                    <option value="1,5 L">1,5 L</option>
                                     <option value="3 L">3 L</option>
                                     <option value="5 L">5 L</option>
                                 </select>
@@ -269,8 +281,18 @@ const AddNewWine = () => {
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || (inputData.tablePrice && inputData.takeAwayPrice) ? 'hidden' : ''}`}>Inserisci entrambi i prezzi</h4>
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
-                                <label htmlFor="volume">Award</label>
+                                <label htmlFor="awards">Award</label>
                                 <input type="checkbox" id="award" className="w-6 h-6" onChange={handleInputData} checked={inputData.award} />
+                            </div>
+
+                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
+                                <label htmlFor="sboccatura">Sboccatura</label>
+                                <input type="checkbox" id="sboccatura" className="w-6 h-6" onChange={handleInputData} checked={inputData.sboccatura} />
+                            </div>
+
+                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
+                                <label htmlFor="favourite">Preferiti</label>
+                                <input type="checkbox" id="favourite" className="w-6 h-6" onChange={handleInputData} checked={inputData.favourite} />
                             </div>
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
