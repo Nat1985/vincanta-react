@@ -12,7 +12,7 @@ const WinesPaper = () => {
     const dispatch = useDispatch();
     // Check mode and type
     const mode = useSelector(state => state.mode);
-    const { type, search } = useSelector(state => state.query);
+    const { type, search, favourites } = useSelector(state => state.query);
 
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
@@ -20,11 +20,8 @@ const WinesPaper = () => {
     const [error, setError] = useState(null);
     const winesDataFetch = async () => {
         setFetchStatus('loading');
-        console.log('type in fetch: ', type);
-        console.log('search in fetch: ', search);
-        const extendedUrl = type || search || '';
-        console.log('extendedUrl: ', extendedUrl);
-        const label = type ? 'type' : (search ? 'search' : '')
+        const extendedUrl = type || search || favourites || '';
+        const label = type ? 'type' : (search ? 'search' : (favourites ? 'favourites' : ''))
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}`, {
                 method: 'GET',
@@ -48,7 +45,7 @@ const WinesPaper = () => {
     }
     useEffect(() => {
         winesDataFetch();
-    }, [type, search])
+    }, [type, search, favourites])
 
     // Handle region for scroll button
     const [uniqueRegions, setUniqueRegions] = useState([]);
