@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import modeReducer from './modeSlice.js';
-import typeReducer from './typeSlice.js';
+import queryReducer from './querySlice.js';
 
 const store = configureStore({
     reducer: {
         mode: modeReducer,
-        type: typeReducer
+        query: queryReducer
     }
 })
 

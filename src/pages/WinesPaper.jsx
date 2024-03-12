@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import FetchLoader from "../components/FetchLoader.jsx";
 import CompanyCard from "../components/CompanyCard.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import wineSelection from '../static/images/wine_selection.png'
 import TypeBar from "../components/TypeBar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
+import { setSearch } from "../redux/querySlice.js";
 
 const WinesPaper = () => {
+    const dispatch = useDispatch();
     // Check mode and type
-    const mode = useSelector(state => state.mode)
-    const selectedType = useSelector(state => state.type);
+    const mode = useSelector(state => state.mode);
+    const { type, search } = useSelector(state => state.query);
 
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
@@ -18,9 +20,13 @@ const WinesPaper = () => {
     const [error, setError] = useState(null);
     const winesDataFetch = async () => {
         setFetchStatus('loading');
-        let extendedUrl = selectedType.type;
+        console.log('type in fetch: ', type);
+        console.log('search in fetch: ', search);
+        const extendedUrl = type || search || '';
+        console.log('extendedUrl: ', extendedUrl);
+        const label = type ? 'type' : (search ? 'search' : '')
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?type=${extendedUrl}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,7 +48,7 @@ const WinesPaper = () => {
     }
     useEffect(() => {
         winesDataFetch();
-    }, [selectedType])
+    }, [type, search])
 
     // Handle region for scroll button
     const [uniqueRegions, setUniqueRegions] = useState([]);
@@ -81,7 +87,16 @@ const WinesPaper = () => {
             {mode.mode === 'show' && <img src={wineSelection} />}
 
             {/* Type select */}
-            <TypeBar />
+            {!search && <TypeBar />}
+
+            {/* Search input */}
+            {search && <div className="flex flex-col gap-2 items-center">
+                <h2 className="font-thin">Parola ricercata:</h2>
+                <div className="flex gap-2 justify-center border-2 border-[#782a76] rounded pb-1 pt-2 px-2">
+                    <div className="pt-[5px]"><i class="fi fi-ss-circle-xmark text-end text-[#782a76] cursor-pointer" onClick={() => dispatch(setSearch(''))}></i></div>
+                    <div className="font-thin">{search}</div>
+                </div>
+            </div>}
 
             {/* Region buttons */}
             <div className="flex flex-col gap-2 items-center">
@@ -107,7 +122,7 @@ const WinesPaper = () => {
             }
             <div className="flex flex-col items-center gap-8 border rounded-xl p-8 w-full max-w-[900px]">
                 {fetchStatus === 'loading' && <FetchLoader />}
-                {fetchStatus === 'failed' && <h3>Qualcosa è andato storto, ricaria la pagina.</h3>}
+                {fetchStatus === 'failed' && <h3>Qualcosa è andato storto, ricarica la pagina.</h3>}
                 {
                     fetchStatus === 'succeeded' &&
                     winesData &&
