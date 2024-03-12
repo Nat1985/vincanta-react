@@ -20,7 +20,7 @@ const Menu = () => {
                         <div className="list-none mx-4 text-[#782a76] leading-[50px]">
                             <Link to="/"><div className="cursor-pointer bg-[#782a76] text-white px-2 rounded" onClick={() => { handleMode('show'); setShowMenu(0) }}>Carta dei vini</div></Link>
                             <Link to="/"><div className="cursor-pointer" onClick={() => { handleMode('edit'); setShowMenu(0) }}>Gestisci prodotti</div></Link>
-                            <div className="cursor-pointer" onClick={() => dispatch(getFavourites())}><i class="fi fi-sr-heart text-red-500"></i> Preferiti</div>
+                            <div className="cursor-pointer flex gap-2" onClick={() => dispatch(getFavourites(true))}><div className='mt-[3px]'><i class="fi fi-sr-heart text-red-500"></i></div> Preferiti</div>
                         </div>
                     </div>
                 ) : (

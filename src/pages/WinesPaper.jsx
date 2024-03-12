@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import wineSelection from '../static/images/wine_selection.png'
 import TypeBar from "../components/TypeBar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
-import { setSearch } from "../redux/querySlice.js";
+import { getFavourites, setSearch } from "../redux/querySlice.js";
 
 const WinesPaper = () => {
     const dispatch = useDispatch();
@@ -84,16 +84,28 @@ const WinesPaper = () => {
             {mode.mode === 'show' && <img src={wineSelection} />}
 
             {/* Type select */}
-            {!search && <TypeBar />}
+            {!search && !favourites && <TypeBar />}
 
             {/* Search input */}
-            {search && <div className="flex flex-col gap-2 items-center">
-                <h2 className="font-thin">Parola ricercata:</h2>
-                <div className="flex gap-2 justify-center border-2 border-[#782a76] rounded pb-1 pt-2 px-2">
-                    <div className="pt-[5px]"><i class="fi fi-ss-circle-xmark text-end text-[#782a76] cursor-pointer" onClick={() => dispatch(setSearch(''))}></i></div>
-                    <div className="font-thin">{search}</div>
+            {search &&
+                <div className="flex flex-col gap-2 items-center">
+                    <div className="flex gap-2 justify-center border-2 border-[#782a76] rounded pb-1 pt-2 px-2">
+                        <div className="mt-[8px]"><i class="fi fi-ss-circle-xmark text-end text-[#782a76] cursor-pointer" onClick={() => dispatch(setSearch(''))}></i></div>
+                        <div className="font-thin text-4xl">{search}</div>
+                    </div>
                 </div>
-            </div>}
+            }
+
+            {/* Favourites */}
+            {
+                favourites &&
+                <div className="flex flex-col gap-2 items-center">
+                    <div className="flex gap-2 justify-center border-2 border-[#782a76] rounded pb-1 pt-2 px-2">
+                        <div className="mt-[8px]"><i class="fi fi-ss-circle-xmark text-end text-[#782a76] cursor-pointer" onClick={() => dispatch(getFavourites(false))}></i></div>
+                        <div className="font-thin text-4xl">Preferiti </div>
+                    </div>
+                </div>
+            }
 
             {/* Region buttons */}
             <div className="flex flex-col gap-2 items-center">

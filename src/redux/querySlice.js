@@ -18,8 +18,8 @@ const querySlice = createSlice({
             state.type = '';
             state.favourites = false;
         },
-        getFavourites: (state) => {
-            state.favourites = true;
+        getFavourites: (state, action) => {
+            state.favourites = action.payload;
             state.type = '';
             state.search = '';
         }
