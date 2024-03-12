@@ -15,7 +15,7 @@ function App() {
       <div className="w-full flex flex-col items-center p-4">
         <img src={logo} alt="Vincanta logo" width='100px' />
       </div>
-      <h4 className='text-sm text-center bg-slate-400 text-white'>Applicativo in fase di modifica. Può nel frattempo continuare ad utilizzarlo e ad inserire altri prodotti</h4>
+      {/* <h4 className='text-sm text-center bg-slate-400 text-white'>Applicativo in fase di modifica. Può nel frattempo continuare ad utilizzarlo e ad inserire altri prodotti</h4> */}
       <Routes>
         <Route exact path="/" element={<WinesPaper />} />
         <Route exact path="/add-new-product" element={<AddNewWine />} />
