@@ -59,7 +59,7 @@ const WineLine = ({ wineData }) => {
                                 {wineData && wineData.type === 'bubbles' && <img src={bubblesIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'bubbles-rosé' && <img src={bubblesRoseIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'rosé' && <img src={roseIcon} className="w-6 h-6" />}
-                                {wineData && wineData.type === 'dessert' && <img src={champagneRoseIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'dessert' && <img src={cakeIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'champagne' && <img src={champagneIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'champagne-rosé' && <img src={champagneRoseIcon} className="w-6 h-6" />}
                             </div>
