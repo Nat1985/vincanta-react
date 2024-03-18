@@ -11,6 +11,7 @@ import roseIcon from '../static/images/rose.png';
 import champagneIcon from '../static/images/champagne.png';
 import bubblesRoseIcon from '../static/images/bubbles_rose.png';
 import champagneRoseIcon from '../static/images/champagne_rose.png';
+import cakeIcon from '../static/images/cake_slice.png';
 
 const WineLine = ({ wineData }) => {
     const mode = useSelector(state => state.mode);
@@ -57,7 +58,8 @@ const WineLine = ({ wineData }) => {
                                 {wineData && wineData.type === 'white' && <img src={whiteIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'bubbles' && <img src={bubblesIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'bubbles-rosé' && <img src={bubblesRoseIcon} className="w-6 h-6" />}
-                                {wineData && wineData.type === 'rose' && <img src={roseIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'rosé' && <img src={roseIcon} className="w-6 h-6" />}
+                                {wineData && wineData.type === 'dessert' && <img src={champagneRoseIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'champagne' && <img src={champagneIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'champagne-rosé' && <img src={champagneRoseIcon} className="w-6 h-6" />}
                             </div>
