@@ -102,7 +102,7 @@ const AddNewWine = () => {
         setInputError(false);
         if (
             inputData.country === '' ||
-            inputData.region === '' ||
+            ((inputData.country === 'Italia' || inputData.country === 'Francia') && inputData.region === '' ) ||
             inputData.company === '' ||
             inputData.type === '' ||
             inputData.name === '' ||
