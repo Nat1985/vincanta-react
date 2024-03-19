@@ -67,6 +67,10 @@ const WineLine = ({ wineData }) => {
                             <div className="pt-[5px]">
                                 {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
                                 {wineData && wineData.favourite && <i class="fi fi-sr-heart text-red-500"></i>}
+                                {
+                                    wineData && wineData.sboccatura.isTrue &&
+                                    <div className="text-xs flex mt-5 md:mt-3">Sboccatura: {wineData.sboccatura.date}</div>
+                                }
                             </div>
                         </div>
                         <div className="text-xs ml-2 md:ml-7">{wineData.description}</div>
