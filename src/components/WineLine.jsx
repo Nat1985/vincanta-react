@@ -12,11 +12,12 @@ import champagneIcon from '../static/images/champagne.png';
 import bubblesRoseIcon from '../static/images/bubbles_rose.png';
 import champagneRoseIcon from '../static/images/champagne_rose.png';
 import cakeIcon from '../static/images/cake_slice.png';
+import SboccLabel from "./SboccLabel";
 
 const WineLine = ({ wineData }) => {
     const mode = useSelector(state => state.mode);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false); // Questo stato è slegato dallo stato generale mode. Questo si attiva dopo aver cliccato sull'icona di modifica (e non selezionanado 'Gestione prodotti')
 
     // Delete fetch
     const [deleteFetchStatus, setDeleteFetchStatus] = useState('idle');
@@ -40,10 +41,13 @@ const WineLine = ({ wineData }) => {
             setDeleteFetchStatus('failed');
         }
     }
+
     return (
 
         !isEditing && !isDeleting ? (
-            <div className={`flex flex-col md:flex-row justify-between gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0 ${mode.mode === 'edit' ? 'bg-fuchsia-50 md:p-2' : ''}`}>
+            <div id={wineData._id} className={`flex flex-col md:flex-row justify-between gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0 ${mode.mode === 'edit' ? 'bg-fuchsia-50 md:p-2' : ''}`}>
+                
+                {/* Blocco nome e descrizioni */}
                 <div className="flex gap-4 text-start">
                     {mode.mode === 'edit' &&
                         <div className="flex gap-4">
@@ -64,18 +68,20 @@ const WineLine = ({ wineData }) => {
                                 {wineData && wineData.type === 'champagne-rosé' && <img src={champagneRoseIcon} className="w-6 h-6" />}
                             </div>
                             <div>{wineData.name}</div>
-                            <div className="pt-[5px]">
+                            <div className="pt-[5px] flex items-center gap-1">
                                 {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
                                 {wineData && wineData.favourite && <i class="fi fi-sr-heart text-red-500"></i>}
                                 {
                                     wineData && wineData.sboccatura.isTrue &&
-                                    <div className="text-xs flex mt-5 md:mt-3">Sboccatura: {wineData.sboccatura.date}</div>
+                                    <SboccLabel date={wineData.sboccatura.date} />
                                 }
                             </div>
                         </div>
-                        <div className="text-xs ml-2 md:ml-7">{wineData.description}</div>
+                        <div className={`text-[10pt] ml-2 md:ml-7 ${mode.mode === 'edit' ? 'w-[350px]' : 'w-[480px]'}`}>{wineData.description}</div>
                     </div>
                 </div>
+
+                {/* Blocco volume, anno, prezzo */}
                 <div className="flex gap-4">
                     <div className="flex flex-col">
                         {/* <div className="md:hidden text-xs text-red-500 mb-[-5px]">q.tà</div> */}
@@ -96,7 +102,7 @@ const WineLine = ({ wineData }) => {
                 </div>
             </div>
         ) : (
-            <div className={`flex flex-col md:flex-row justify-center gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0`}>
+            <div id={wineData._id} className={`flex flex-col md:flex-row justify-center gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0`}>
                 {
                     isEditing &&
                     <div className="flex flex-col md:flex-row gap-2 p-1 items-center">

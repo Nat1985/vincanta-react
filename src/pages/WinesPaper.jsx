@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FetchLoader from "../components/FetchLoader.jsx";
 import CompanyCard from "../components/CompanyCard.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import SearchBar from "../components/SearchBar.jsx";
 import { getFavourites, setSearch } from "../redux/querySlice.js";
 
 const WinesPaper = () => {
+
     const dispatch = useDispatch();
     // Check mode and type
     const mode = useSelector(state => state.mode);
@@ -69,9 +70,21 @@ const WinesPaper = () => {
             regionRef.scrollIntoView({ behavior: 'smooth' })
         }
     }
-    // Debug
+
+    // Init scroll (if user come from edit mode) - this start when last state update is finish
+
+        const queryString = window.location.search;
+        const params = new URLSearchParams(queryString);
+        const scroll = params.get('scroll');
+        const idTargetRef = useRef();
+    
     useEffect(() => {
-        console.log('uniqueRegions: ', uniqueRegions)
+        const targetElement = document.getElementById(scroll);
+        if (targetElement) {
+            const scrollYOffset = -300;
+            const scrollY = targetElement.getBoundingClientRect().top + window.pageYOffset + scrollYOffset;
+        window.scrollTo({ top: scrollY, behavior: 'smooth' });
+        }
     }, [uniqueRegions])
 
     //Debug

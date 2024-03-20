@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import FetchLoader from '../components/FetchLoader.jsx';
 import { PrimaryButton } from "../components/buttons.jsx";
+import { useSelector } from "react-redux";
 
 const AddNewWine = () => {
 
-    // Check new or edit and fetch values
+    // Check new or edit and fetch values and check scroll
     const [wineToEdit, setWineToEdit] = useState(null);
     const [wineData, setWineData] = useState(null);
     const [wineDataFetchStatus, setWineDataFetchStatus] = useState('idle');
@@ -129,7 +130,7 @@ const AddNewWine = () => {
                 })
                 if (response.ok) {
                     setFetchStatus('succeeded');
-                    window.location.href = "/";
+                        window.location.href=`/?scroll=${wineData._id}`
                 } else {
                     const error = await response.json();
                     setErrorMessage(error.message);

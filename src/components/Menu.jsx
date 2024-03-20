@@ -9,7 +9,8 @@ const Menu = () => {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(0);
     const handleMode = (mode) => {
-        dispatch(selectMode(mode))
+        let currentScrollHeight;
+        dispatch(selectMode({mode}))
     }
     return (
         <div className='fixed top-2 right-2'>

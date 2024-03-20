@@ -7,10 +7,10 @@ const modeSlice = createSlice({
     },
     reducers: {
         selectMode: (state, action) => {
-            state.mode = action.payload
+            state.mode = action.payload.mode;
         }
     }
 })
 
-export const { selectMode } = modeSlice.actions;
+export const { selectMode, setScrollHeight } = modeSlice.actions;
 export default modeSlice.reducer;
