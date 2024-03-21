@@ -130,21 +130,35 @@ const AddNewWine = () => {
                 })
                 if (response.ok) {
                     setFetchStatus('succeeded');
-                        window.location.href=`/?scroll=${wineData._id}`
+                    if (wineToEdit) {
+                        window.location.href=`/?scroll=${wineToEdit}`
+                    } else {
+                        window.location.href="/"
+                    }
                 } else {
                     const error = await response.json();
                     setErrorMessage(error.message);
+                    console.log('fetch error message: ', error);
                     setFetchStatus('failed');
                 }
             } catch (error) {
                 setErrorMessage(error.message);
+                console.log('fetch error message: ', error);
                 setFetchStatus('failed');
             }
         }
     }
+    // Scroll to bottom after fetch
+    useEffect(() => {
+        if (fetchStatus === "succeeded" ) {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    }, [fetchStatus])
+    
     useEffect(() => {
         console.log('inputData: ', inputData)
     }, [inputData])
+
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8">
             {
