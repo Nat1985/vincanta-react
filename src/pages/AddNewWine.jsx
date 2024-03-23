@@ -103,7 +103,7 @@ const AddNewWine = () => {
         setInputError(false);
         if (
             inputData.country === '' ||
-            ((inputData.country === 'Italia' || inputData.country === 'Francia') && inputData.region === '' ) ||
+            ((inputData.country === 'Italia' || inputData.country === 'Francia') && inputData.region === '') ||
             inputData.company === '' ||
             inputData.type === '' ||
             inputData.name === '' ||
@@ -131,9 +131,9 @@ const AddNewWine = () => {
                 if (response.ok) {
                     setFetchStatus('succeeded');
                     if (wineToEdit) {
-                        window.location.href=`/?scroll=${wineToEdit}`
+                        window.location.href = `/?scroll=${wineToEdit}`
                     } else {
-                        window.location.href="/"
+                        window.location.href = "/"
                     }
                 } else {
                     const error = await response.json();
@@ -150,11 +150,11 @@ const AddNewWine = () => {
     }
     // Scroll to bottom after fetch
     useEffect(() => {
-        if (fetchStatus === "succeeded" ) {
+        if (fetchStatus === "succeeded") {
             window.scrollTo(0, document.body.scrollHeight);
         }
     }, [fetchStatus])
-    
+
     useEffect(() => {
         console.log('inputData: ', inputData)
     }, [inputData])
@@ -231,11 +231,12 @@ const AddNewWine = () => {
                                     {inputData && inputData.country === "Italia" && <option value="Umbria">Umbria</option>}
                                     {inputData && inputData.country === "Italia" && <option value="Valle d'Aosta">Valle d'Aosta</option>}
                                     {inputData && inputData.country === "Italia" && <option value="Veneto">Veneto</option>}
-                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Provence">Provence</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Provence">Alsace</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Bordeaux">Bordeaux</option>}
-                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Cote Du Rhone">Cote Du Rhone</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Borgogna">Borgogna</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Cote Du Rhone">Cote Du Rhone</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Loira">Loira</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Provence">Provence</option>}
 
                                     {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Montagne de Reims">Montagne de Reims</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Côte des Blancs">Côte des Blancs</option>}
