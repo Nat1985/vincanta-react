@@ -231,7 +231,7 @@ const AddNewWine = () => {
                                     {inputData && inputData.country === "Italia" && <option value="Umbria">Umbria</option>}
                                     {inputData && inputData.country === "Italia" && <option value="Valle d'Aosta">Valle d'Aosta</option>}
                                     {inputData && inputData.country === "Italia" && <option value="Veneto">Veneto</option>}
-                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Provence">Alsace</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Alsace">Alsace</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Bordeaux">Bordeaux</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Borgogna">Borgogna</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type !== 'champagne' && inputData.type !== 'champagne-rosé') && <option value="Cote Du Rhone">Cote Du Rhone</option>}
