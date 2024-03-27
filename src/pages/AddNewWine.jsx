@@ -27,6 +27,7 @@ const AddNewWine = () => {
                 });
                 if (response.ok) {
                     const result = await response.json();
+                    console.log('payload: ', result.payload)
                     setWineData(result.payload);
                     setWineDataFetchStatus('succeeded');
                 } else {
@@ -65,7 +66,7 @@ const AddNewWine = () => {
         if (wineToEdit) {
             if (wineData) {
                 setInputData({
-                    country: wineData.country,
+                    country: wineData.country === "Champagne" ? "Francia" : wineData.country,
                     region: wineData.region,
                     city: wineData.city,
                     company: wineData.company,
