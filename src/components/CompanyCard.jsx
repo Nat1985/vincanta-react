@@ -3,7 +3,7 @@ import WineLine from "./WineLine";
 
 const CompanyCard = ({ data }) => {
     return (
-        <div className="w-[320px] md:w-full flex flex-col gap-2 p-4 border-2 rounded">
+        <div className="w-[320px] md:w-full flex flex-col gap-2 p-4 border border-neutral-300 rounded">
 
             {/* Azienda e paese */}
             <div className="flex flex-col md:flex-row gap-2 text-start border-b">
@@ -16,7 +16,10 @@ const CompanyCard = ({ data }) => {
                 <div className="w-full hidden md:flex gap-4 justify-end text-xs text-red-500">
                     {/* <div>q.tà</div> */}
                     <div className="w-[60px]">annata</div>
-                    <div className="w-[60px]">tavolo</div>
+                    <div className="w-[60px]">
+                        <div>tavolo</div>
+                        <div>aperitivo</div>
+                    </div>
                     <div className="w-[60px]">asporto</div>
                 </div>
                 {

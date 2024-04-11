@@ -67,7 +67,7 @@ const WineLine = ({ wineData }) => {
                                 {wineData && wineData.type === 'champagne' && <img src={champagneIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'champagne-rosé' && <img src={champagneRoseIcon} className="w-6 h-6" />}
                             </div>
-                            <div>{wineData.name}</div>
+                            <div className="font-signature">{wineData.name}</div>
                             <div className="pt-[5px] flex items-center gap-1">
                                 {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
                                 {wineData && wineData.favourite && <i class="fi fi-sr-heart text-red-500"></i>}
@@ -77,7 +77,7 @@ const WineLine = ({ wineData }) => {
                                 }
                             </div>
                         </div>
-                        <div className={`text-[10pt] ml-2 md:ml-7 ${mode.mode === 'edit' ? 'w-[350px]' : 'w-[480px]'}`}>{wineData.description}</div>
+                        <div className={`text-[12pt] ml-2 md:ml-7 ${mode.mode === 'edit' ? 'w-[350px]' : 'w-[480px]'}`}>{wineData.description}</div>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@ const WineLine = ({ wineData }) => {
                 <div className="flex gap-4">
                     <div className="flex flex-col">
                         {/* <div className="md:hidden text-xs text-red-500 mb-[-5px]">q.tà</div> */}
-                        <div className="text-xs flex mt-5 md:mt-3">{wineData.volume}</div>
+                        <div className="text-xs flex mt-5 md:mt-3 min-w-[40px]">{wineData.volume}</div>
                     </div>
                     <div className="flex flex-col">
                         <div className="md:hidden text-xs text-red-500 mb-[-5px]">Annata</div>
