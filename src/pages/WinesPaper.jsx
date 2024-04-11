@@ -73,17 +73,17 @@ const WinesPaper = () => {
 
     // Init scroll (if user come from edit mode) - this start when last state update is finish
 
-        const queryString = window.location.search;
-        const params = new URLSearchParams(queryString);
-        const scroll = params.get('scroll');
-        const idTargetRef = useRef();
-    
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const scroll = params.get('scroll');
+    const idTargetRef = useRef();
+
     useEffect(() => {
         const targetElement = document.getElementById(scroll);
         if (targetElement) {
             const scrollYOffset = -300;
             const scrollY = targetElement.getBoundingClientRect().top + window.pageYOffset + scrollYOffset;
-        window.scrollTo({ top: scrollY, behavior: 'smooth' });
+            window.scrollTo({ top: scrollY, behavior: 'smooth' });
         }
     }, [uniqueRegions])
 
@@ -91,6 +91,31 @@ const WinesPaper = () => {
     useEffect(() => {
         console.log('winesData: ', winesData)
     }, [winesData])
+
+    // counter vini
+    const [wineCounter, setWineCounter] = useState(null);
+    const requestCounter = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/count-wines`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const result = await response.json();
+                setWineCounter(result.payload);
+            } else {
+                const error = await response.json();
+                console.log('count fetch error: ', error)
+            }
+        } catch (error) {
+            console.log('count catch error: ', error)
+        }
+    }
+    useEffect(() => {
+        requestCounter();
+    }, [])
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8 w-full px-4">
             {mode.mode === 'edit' && <h2>Gestisci prodotti</h2>}
@@ -137,10 +162,14 @@ const WinesPaper = () => {
 
             {
                 mode.mode === 'edit' &&
-                <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
-                    <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>
-                    Aggiungi prodotto
-                </div></Link>
+                <div className="flex flex-col gap-2">
+                    <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
+                        <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>
+                        Aggiungi prodotto
+                    </div></Link>
+                        {wineCounter && <div className="text-sm">(<span className="text-[#782a76] font-bold">{wineCounter}</span> vini totali)</div>}
+                </div>
+
             }
             <div className="flex flex-col items-center gap-8 border rounded-xl p-8 w-full max-w-[900px]">
                 {fetchStatus === 'loading' && <FetchLoader />}

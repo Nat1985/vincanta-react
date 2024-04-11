@@ -15,6 +15,7 @@ const AddNewWine = () => {
         const wineId = params.get('wineId');
         if (wineId) setWineToEdit(wineId);
     }, []);
+
     useEffect(() => {
         const fetchData = async () => {
             setWineDataFetchStatus('loading');
