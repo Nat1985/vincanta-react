@@ -67,7 +67,7 @@ const WineLine = ({ wineData }) => {
                                 {wineData && wineData.type === 'champagne' && <img src={champagneIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'champagne-rosé' && <img src={champagneRoseIcon} className="w-6 h-6" />}
                             </div>
-                            <div className="font-signature">{wineData.name}</div>
+                            <div>{wineData.name}</div>
                             <div className="pt-[5px] flex items-center gap-1">
                                 {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
                                 {wineData && wineData.favourite && <i class="fi fi-sr-heart text-red-500"></i>}
