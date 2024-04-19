@@ -77,7 +77,7 @@ const WineLine = ({ wineData }) => {
                                 }
                             </div>
                         </div>
-                        <div className={`text-[12pt] ml-2 md:ml-7 ${mode.mode === 'edit' ? 'w-[350px]' : 'w-[480px]'}`}>{wineData.description}</div>
+                        <div className={`text-[12pt] ml-2 md:ml-7 ${mode.mode === 'edit' ? 'w-[350px]' : 'lg:w-[480px]'}`}>{wineData.description}</div>
                     </div>
                 </div>
 
