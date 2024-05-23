@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import ScrollToTopButton from './components/ScrollTotopButton.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import PasswordReset from './pages/PasswordReset.jsx';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/" element={<WinesPaper />} />
         <Route exact path="/add-new-product" element={<AddNewWine />} />
         <Route exact path="/login" element={<LoginPage />} />
+        <Route exact path="/reset-password" element={<PasswordReset />} />
       </Routes>
     </Router>
   );
