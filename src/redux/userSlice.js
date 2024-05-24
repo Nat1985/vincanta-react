@@ -34,7 +34,14 @@ const userSlice = createSlice({
         isLogged: false,
         userData: null
     },
-    reducers: {},
+    reducers: {
+        getLogged: (state) => {
+            state.isLogged = true
+        },
+        getUnlogged: (state) => {
+            state.isLogged = false
+        }
+    },
     extraReducers: (builder) => {
         builder
         .addCase(sendLogin.pending, (state) => {
@@ -44,6 +51,7 @@ const userSlice = createSlice({
             state.isLogged = true;
             state.userData = action.payload;
             state.fetchStatus = 'succeeded';
+            state.error = null;
         })
         .addCase(sendLogin.rejected, (state, action) => {
             state.isLogged = false;
@@ -53,4 +61,5 @@ const userSlice = createSlice({
     }
 })
 
+export const { getLogged, getUnlogged } = userSlice.actions;
 export default userSlice.reducer;

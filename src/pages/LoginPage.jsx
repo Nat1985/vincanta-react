@@ -42,7 +42,7 @@ const LoginPage = () => {
                     <label htmlFor="password">Password</label>
                     <input id="password" type="password" onChange={handleInputData} value={inputData.password} />
                 </div>
-                <Link><h5 className='text-[#782a76] underline self-end'>Reimposta password</h5></Link>
+                <Link to="/reset-password"><h5 className='text-[#782a76] underline self-end'>Reimposta password</h5></Link>
                 {fetchStatus === 'loading' && <FetchLoader />}
                 {fetchStatus === 'failed' && <h5 className='p-2 border rounded border-red-500'>{'errore: ' + error.message}</h5>}
                 {(fetchStatus === 'idle' || fetchStatus === 'failed') && <PrimaryButton text="Accedi" click={(sendData)} />}

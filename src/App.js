@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Menu from './components/Menu.jsx';
 import AddNewWine from './pages/AddNewWine.jsx';
 import WinesPaper from './pages/WinesPaper.jsx';
@@ -8,8 +8,14 @@ import { useEffect } from 'react';
 import ScrollToTopButton from './components/ScrollTotopButton.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PasswordReset from './pages/PasswordReset.jsx';
+import SetNewPassword from './pages/SetNewPassword.jsx';
+import { getLogged } from './redux/userSlice.js';
 
 function App() {
+  const token = localStorage.getItem('vincanta-token');
+  console.log('token: ', token)
+  const dispatch = useDispatch();
+  if (token) dispatch(getLogged());
   return (
     <Router>
       <Menu />
@@ -23,6 +29,7 @@ function App() {
         <Route exact path="/add-new-product" element={<AddNewWine />} />
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/reset-password" element={<PasswordReset />} />
+        <Route exact path="/set-new-password" element={<SetNewPassword />} />
       </Routes>
     </Router>
   );
