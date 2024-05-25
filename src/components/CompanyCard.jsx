@@ -24,7 +24,7 @@ const CompanyCard = ({ data }) => {
                 </div>
                 {
                     data && data.data && data.data.map((wine, index) => (
-                        <WineLine wineData={wine} />
+                        <WineLine key={index} wineData={wine} />
                     ))
                 }
             </div>

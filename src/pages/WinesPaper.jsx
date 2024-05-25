@@ -150,8 +150,8 @@ const WinesPaper = () => {
                 <h2 className="font-thin">Regioni:</h2>
                 <div className="flex flex-wrap gap-2 justify-center">
                     {
-                        uniqueRegions.map(element => (
-                            <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
+                        uniqueRegions.map((element, index) => (
+                            <div key={index} className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
                         ))
                     }
                 </div>
@@ -178,7 +178,7 @@ const WinesPaper = () => {
                     fetchStatus === 'succeeded' &&
                     winesData &&
                     winesData.map((element, index) => (
-                        <div className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center">
+                        <div key={index} className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center">
                             {index !== 0 && <hr className="w-full" />}
                             <h1>{element.country}</h1>
                             {
