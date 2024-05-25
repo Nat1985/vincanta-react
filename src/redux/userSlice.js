@@ -16,7 +16,31 @@ export const sendLogin = createAsyncThunk(
         const response = await fetch(url, options);
         if (response.ok) {
             const result = await response.json();
-            console.log('Login result: ', result);
+            console.log(result.message);
+            return result.payload;
+        } else {
+            const error = await response.json();
+            throw error;
+        }
+    }
+)
+
+export const checkToken = createAsyncThunk(
+    'user/checkToken',
+    async (token) => {
+        const url = `${process.env.REACT_APP_SERVER_BASE_URL}/users/verify-token`;
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        const options = {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ token })
+        }
+        const response = await fetch(url, options);
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result.message)
             return result.payload;
         } else {
             const error = await response.json();
@@ -31,6 +55,7 @@ const userSlice = createSlice({
         fetchStatus: 'idle',
         error: null,
         isLogged: false,
+        token: null
     },
     reducers: {
         getLogged: (state) => {
@@ -48,11 +73,32 @@ const userSlice = createSlice({
             .addCase(sendLogin.fulfilled, (state, action) => {
                 localStorage.setItem('vincanta-token', action.payload);
                 state.isLogged = true;
+                state.token = action.payload;
                 state.fetchStatus = 'succeeded';
                 state.error = null;
             })
             .addCase(sendLogin.rejected, (state, action) => {
+                console.log('Error: ', action.error);
                 state.isLogged = false;
+                localStorage.removeItem('vincanta-token');
+                state.error = action.error;
+                state.fetchStatus = 'failed';
+            })
+            .addCase(checkToken.pending, (state) => {
+                state.fetchStatus = 'loading';
+            })
+            .addCase(checkToken.fulfilled, (state, action) => {
+                localStorage.setItem('vincanta-token', action.payload);
+                state.isLogged = true;
+                state.token = action.payload;
+                state.fetchStatus = 'succeeded';
+                state.error = null;
+            })
+            .addCase(checkToken.rejected, (state, action) => {
+                console.log('Error: ', action.error);
+                state.isLogged = false;
+                state.token = null;
+                localStorage.removeItem('vincanta-token');
                 state.error = action.error;
                 state.fetchStatus = 'failed';
             })

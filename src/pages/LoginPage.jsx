@@ -24,7 +24,7 @@ const LoginPage = () => {
     }
     const navigate = useNavigate();
     useEffect(() => {
-        if(fetchStatus === 'succeeded') {
+        if (fetchStatus === 'succeeded') {
             setTimeout(() => {
                 navigate("/")
             }, 3000)
@@ -34,15 +34,20 @@ const LoginPage = () => {
         <div className="flex w-full h-screen justify-center">
             <div className="mt-32 h-fit w-full md:w-[500px] flex flex-col gap-8 md:border-2 md:border-[#782a76] bg-white bg-opacity-90 p-8 rounded-xl">
                 <h2>Esegui il login</h2>
-                <div className="flex flex-col">
-                    <label htmlFor="email">Email</label>
-                    <input id="email" type="text" onChange={handleInputData} value={inputData.email} />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="password">Password</label>
-                    <input id="password" type="password" onChange={handleInputData} value={inputData.password} />
-                </div>
-                <Link to="/reset-password"><h5 className='text-[#782a76] underline self-end'>Reimposta password</h5></Link>
+                {
+                    (fetchStatus === 'idle' || fetchStatus === 'failed') &&
+                    <div className="flex flex-col gap-8">
+                        <div className="flex flex-col">
+                            <label htmlFor="email">Email</label>
+                            <input id="email" type="text" onChange={handleInputData} value={inputData.email} />
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="password">Password</label>
+                            <input id="password" type="password" onChange={handleInputData} value={inputData.password} />
+                        </div>
+                        <Link to="/reset-password"><h5 className='text-[#782a76] underline self-end'>Reimposta password</h5></Link>
+                    </div>
+                }
                 {fetchStatus === 'loading' && <FetchLoader />}
                 {fetchStatus === 'failed' && <h5 className='p-2 border rounded border-red-500'>{'errore: ' + error.message}</h5>}
                 {(fetchStatus === 'idle' || fetchStatus === 'failed') && <PrimaryButton text="Accedi" click={(sendData)} />}

@@ -17,6 +17,9 @@ const WinesPaper = () => {
 
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
+    useEffect(() => {
+        console.log('winesData: ', winesData)
+    }, [winesData])
     const [fetchStatus, setFetchStatus] = useState('idle');
     const [error, setError] = useState(null);
     const winesDataFetch = async () => {

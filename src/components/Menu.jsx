@@ -10,6 +10,8 @@ const Menu = () => {
     const mode = useSelector(state => state.mode)
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(0);
+    /* const { isShow } = useSelector(state => state.menu); */
+
     const handleMode = (mode) => {
         let currentScrollHeight;
         dispatch(selectMode({ mode }))
