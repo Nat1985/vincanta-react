@@ -16,6 +16,8 @@ function App() {
   const token = localStorage.getItem('vincanta-token');
   const dispatch = useDispatch();
   const { fetchStatus } = useSelector(state => state.user);
+
+  // controllo che ci sia il token, se c'è controllo che non sia scaduto e nel caso lo refresho
   useEffect(() => {
     if (token) {
       console.log('token exists');
