@@ -7,6 +7,7 @@ import wineSelection from '../static/images/wine_selection.png'
 import TypeBar from "../components/TypeBar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import { getFavourites, setSearch } from "../redux/querySlice.js";
+import PriceRange from "../components/PriceRange.jsx";
 
 const WinesPaper = () => {
 
@@ -26,8 +27,11 @@ const WinesPaper = () => {
         setFetchStatus('loading');
         const extendedUrl = type || search || favourites || '';
         const label = type ? 'type' : (search ? 'search' : (favourites ? 'favourites' : ''))
+        // Inserire condizione priceRange
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}`, {
+            const url =`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}`
+            console.log('url: ', url)
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -124,6 +128,9 @@ const WinesPaper = () => {
             {mode.mode === 'edit' && <h2>Gestisci prodotti</h2>}
             {mode.mode === 'show' && <img src={wineSelection} />}
 
+            {/* Search Bar */}
+            <SearchBar />
+
             {/* Type select */}
             {!search && !favourites && <TypeBar />}
 
@@ -160,9 +167,9 @@ const WinesPaper = () => {
                 </div>
             </div>
 
-            {/* Search Bar */}
-            <SearchBar />
-
+            {/* Seleziona priceRange */}
+            <PriceRange />
+            
             {
                 mode.mode === 'edit' &&
                 <div className="flex flex-col gap-2">
