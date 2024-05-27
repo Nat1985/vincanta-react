@@ -185,6 +185,7 @@ const AddNewWine = () => {
                                     <option value="Germania">Germania</option>
                                     <option value="Grecia">Grecia</option>
                                     <option value="Portogallo">Portogallo</option>
+                                    <option value="Slovenia">Slovenia</option>
                                     <option value="Spagna">Spagna</option>
                                     <option value="USA">USA</option>
                                 </select>
