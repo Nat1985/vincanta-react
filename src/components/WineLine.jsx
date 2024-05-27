@@ -13,6 +13,7 @@ import bubblesRoseIcon from '../static/images/bubbles_rose.png';
 import champagneRoseIcon from '../static/images/champagne_rose.png';
 import cakeIcon from '../static/images/cake_slice.png';
 import SboccLabel from "./SboccLabel";
+import CatLabel from "./CatLabel.jsx";
 
 const WineLine = ({ wineData }) => {
     const mode = useSelector(state => state.mode);
@@ -71,6 +72,10 @@ const WineLine = ({ wineData }) => {
                             <div className="pt-[5px] flex items-center gap-1">
                                 {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
                                 {wineData && wineData.favourite && <i class="fi fi-sr-heart text-red-500"></i>}
+                                {
+                                    wineData && wineData.champagneCategory &&
+                                    <CatLabel cat={wineData.champagneCategory} />
+                                }
                                 {
                                     wineData && wineData.sboccatura.isTrue &&
                                     <SboccLabel date={wineData.sboccatura.date} />

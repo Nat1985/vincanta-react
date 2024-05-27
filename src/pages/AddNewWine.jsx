@@ -45,6 +45,7 @@ const AddNewWine = () => {
     const [inputData, setInputData] = useState({
         country: '',
         region: '',
+        champagneCategory: '',
         city: '',
         company: '',
         type: '',
@@ -69,6 +70,7 @@ const AddNewWine = () => {
                 setInputData({
                     country: wineData.country === "Champagne" ? "Francia" : wineData.country,
                     region: wineData.region,
+                    champagneCategory: wineData.type === 'champagne' || wineData.type === 'champagne-rosé' ? wineData.champagneCategory : null,
                     city: wineData.city,
                     company: wineData.company,
                     type: wineData.type,
@@ -106,6 +108,7 @@ const AddNewWine = () => {
         if (
             inputData.country === '' ||
             ((inputData.country === 'Italia' || inputData.country === 'Francia') && inputData.region === '') ||
+            inputData.champagneCategoryCategory === '' ||
             inputData.company === '' ||
             inputData.type === '' ||
             inputData.name === '' ||
@@ -174,6 +177,7 @@ const AddNewWine = () => {
                         {wineToEdit && wineData && <h3 className="mt-[-30px]">di <span className="text-[#782a76]">{wineData.company}</span></h3>}
                         <div className="min-w-[340px] md:w-[600px] flex flex-col gap-8 border rounded-xl p-8">
 
+                            {/* NAZIONE */}
                             <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
                                 <label htmlFor="country">Nazione</label>
                                 <select name="country" id="country" className="w-60" onChange={handleInputData} value={inputData.country}>
@@ -192,7 +196,7 @@ const AddNewWine = () => {
                             </div>
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.country !== '' ? 'hidden' : ''}`}>Inserisci il paese</h4>
 
-
+                            {/* GENERE */}
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="type">Genere</label>
                                 <select name="type" id="type" className="w-60" onChange={handleInputData} value={inputData.type} >
@@ -207,8 +211,28 @@ const AddNewWine = () => {
                                     {inputData.country === 'Francia' && <option value="champagne-rosé">CHAMPAGNE ROSE'</option>}
                                 </select>
                             </div>
+
+                            {/* CATEGORIA CHAMPAGNE */}
+                            {
+                                (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') &&
+                                <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
+                                    <label htmlFor="type">Categoria champagne</label>
+                                    <select name="champagneCategory" id="champagneCategory" className="w-60" onChange={handleInputData} value={inputData.champagneCategory} >
+                                        <option value="" disabled selected hidden></option>
+                                        <option value="Maison">Maison</option>
+                                        <option value="Négociant manipulant">Négociant manipulant</option>
+                                        <option value="Récoltant manipulant">Récoltant manipulant</option>
+                                        <option value="Coopérative de manipulation">Coopérative de manipulation</option>
+                                        <option value="Récoltant-coopérateur">Récoltant-coopérateur</option>
+                                        <option value="Société de Récoltants">Société de Récoltants</option>
+                                        <option value="Négociant distributeur">Négociant distributeur</option>
+                                        <option value="Marque auxiliaire">Marque auxiliaire</option>
+                                    </select>
+                                </div>
+                            }
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.type !== '' ? 'hidden' : ''}`}>Inserisci il genere</h4>
 
+                            {/* REGIONE */}
                             {(inputData.country === 'Italia' || inputData.country === 'Francia') && <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="region">Regione</label>
                                 <select name="region" id="region" className="w-60" onChange={handleInputData} value={inputData.region}>
