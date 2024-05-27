@@ -4,7 +4,7 @@ import { setPriceRange, setRangeNull } from "../redux/querySlice";
 import { NoBgButton } from './buttons.jsx'
 
 // Il range di prezzo viene calcolato da frontend
-const PriceRange = () => {
+const PriceRange = ({ setUniqueCountries, setUniqueRegions }) => {
     const dispatch = useDispatch();
     const { priceRange } = useSelector(state => state.query);
     const [priceInput, setPriceInput] = useState(null);
@@ -21,10 +21,14 @@ const PriceRange = () => {
             from: priceInput.from,
             to: priceInput.to
         }))
+        setUniqueCountries([]);
+        setUniqueRegions([]);
     }
     const handleRemoveRange = () => {
         dispatch(setRangeNull());
         setPriceInput(null);
+        setUniqueCountries([]);
+        setUniqueRegions([]);
     }
     return (
         <div className="flex flex-col gap-2 p-4 rounded-xl border border-[#782a76] items-center">

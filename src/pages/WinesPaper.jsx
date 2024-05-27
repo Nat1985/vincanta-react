@@ -29,7 +29,7 @@ const WinesPaper = () => {
         const rangeFrom = priceRange ? priceRange.from : '';
         const rangeTo = priceRange ? priceRange.to : '';
         try {
-            const url =`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}`
+            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}`
             console.log('url: ', url)
             const response = await fetch(url, {
                 method: 'GET',
@@ -55,23 +55,37 @@ const WinesPaper = () => {
         winesDataFetch();
     }, [type, search, favourites, priceRange])
 
-    // Handle region for scroll button
+    // Handle NATION and REGION for scroll button
+    const [uniqueContries, setUniqueCountries] = useState([]);
     const [uniqueRegions, setUniqueRegions] = useState([]);
     useEffect(() => {
-        const extractRegions = (data) => {
-            return data.flatMap((element => {
-                if (element.data) {
-                    return element.region ? [element.region, ...extractRegions(element.data)] : extractRegions(element.data);
-                }
-                return element.region ? [element.region] : [];
-            }))
-        }
         if (winesData) {
+            // Imposto nazioni
+            let countries = [];
+            let isChampagne;
+            winesData.map(element => {
+                if(element.country !== 'Champagne') {
+                    countries.push(element.country)
+                } else {
+                    isChampagne = true;
+                }
+            });
+            if (isChampagne) countries.push('Champagne');
+            setUniqueCountries(countries);
+            // Imposto regioni
+            const extractRegions = (data) => {
+                return data.flatMap((element => {
+                    if (element.data) {
+                        return element.region ? [element.region, ...extractRegions(element.data)] : extractRegions(element.data);
+                    }
+                    return element.region ? [element.region] : [];
+                }))
+            }
             const regions = Array.from(new Set(winesData.flatMap(element => extractRegions(element.data))));
             setUniqueRegions(regions);
         }
     }, [winesData])
-    const scrollToRegion = (region) => {
+    const scrollToRegion = (region) => { // agisce sia su nazioni che su regioni
         const regionRef = document.getElementById(region);
         if (regionRef) {
             regionRef.scrollIntoView({ behavior: 'smooth' })
@@ -155,21 +169,41 @@ const WinesPaper = () => {
                 </div>
             }
 
-            {/* Region buttons */}
-            <div className="flex flex-col gap-2 items-center">
-                <h2 className="font-thin">Regioni:</h2>
-                <div className="flex flex-wrap gap-2 justify-center">
+            {/* Selezione NAZIONI */}
+            <div className="flex flex-col gap2">
+                <h2 className="font-thin">Nazioni:</h2>
+                <select name="regions" id="regions" onChange={(e) => scrollToRegion(e.target.value)}>
+                    <option value=""></option>
                     {
+                        uniqueContries.map((element, index) => (
+                            <option key={index} value={element}>{element}</option>
+                        ))
+                    }
+                </select>
+            </div>
+            {/* Selezione REGIONI */}
+            <div className="flex flex-col gap2">
+                <h2 className="font-thin">Regioni:</h2>
+                <select name="regions" id="regions" onChange={(e) => scrollToRegion(e.target.value)}>
+                    <option value=""></option>
+                    {
+                        uniqueRegions.map((element, index) => (
+                            <option key={index} value={element}>{element}</option>
+                        ))
+                    }
+                </select>
+            </div>
+            {/* <div className="flex flex-wrap gap-2 justify-center">
+                {
                         uniqueRegions.map((element, index) => (
                             <div key={index} className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
                         ))
                     }
-                </div>
-            </div>
+                </div> */}
 
             {/* Seleziona priceRange */}
-            <PriceRange />
-            
+            <PriceRange setUniqueCountries={setUniqueCountries} setUniqueRegions={setUniqueRegions}/>
+
             {
                 mode.mode === 'edit' &&
                 <div className="flex flex-col gap-2">
@@ -177,7 +211,7 @@ const WinesPaper = () => {
                         <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>
                         Aggiungi prodotto
                     </div></Link>
-                        {wineCounter && <div className="text-sm">(<span className="text-[#782a76] font-bold">{wineCounter}</span> vini totali)</div>}
+                    {wineCounter && <div className="text-sm">(<span className="text-[#782a76] font-bold">{wineCounter}</span> vini totali)</div>}
                 </div>
 
             }
@@ -188,7 +222,7 @@ const WinesPaper = () => {
                     fetchStatus === 'succeeded' &&
                     winesData &&
                     winesData.map((element, index) => (
-                        <div key={index} className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center">
+                        <div key={index} className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center" id={element.country}>
                             {index !== 0 && <hr className="w-full" />}
                             <h1>{element.country}</h1>
                             {
@@ -197,7 +231,7 @@ const WinesPaper = () => {
                                         <h2>{region.region}</h2>
                                         {
                                             region.data.map((company, companyIndex) => (
-                                                
+
                                                 <CompanyCard key={companyIndex} data={company} />
                                             ))
                                         }
