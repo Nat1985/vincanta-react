@@ -28,6 +28,7 @@ const PriceRange = () => {
     }
     return (
         <div className="flex flex-col gap-2 p-4 rounded-xl border border-[#782a76] items-center">
+            <h5>Imposta un intervallo di prezzo</h5>
             {/* <h4>Imposta un range di prezzo</h4> */}
             {
                 !priceRange &&
@@ -36,7 +37,7 @@ const PriceRange = () => {
                     <input type="number" id="from" className="w-24" onChange={handlePriceInput} value={priceInput ? priceInput.from : ''} />
                     <label htmlFor="to">a:</label>
                     <input type="number" id="to" className="w-24" onChange={handlePriceInput} value={priceInput ? priceInput.to : ''} />
-                    {priceInput && <div className="text-sm"><NoBgButton text="Imposta intervallo di prezzo" click={handleSetRange} /></div>}
+                    {priceInput && <div className="text-sm"><NoBgButton text="Imposta" click={handleSetRange} /></div>}
                 </div>
             }
             {
