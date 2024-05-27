@@ -14,8 +14,7 @@ const WinesPaper = () => {
     const dispatch = useDispatch();
     // Check mode and type
     const mode = useSelector(state => state.mode);
-    const { type, search, favourites } = useSelector(state => state.query);
-
+    const { type, search, favourites, priceRange } = useSelector(state => state.query);
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
     useEffect(() => {
@@ -26,10 +25,11 @@ const WinesPaper = () => {
     const winesDataFetch = async () => {
         setFetchStatus('loading');
         const extendedUrl = type || search || favourites || '';
-        const label = type ? 'type' : (search ? 'search' : (favourites ? 'favourites' : ''))
-        // Inserire condizione priceRange
+        const label = type ? 'type' : (search ? 'search' : (favourites ? 'favourites' : ''));
+        const rangeFrom = priceRange ? priceRange.from : '';
+        const rangeTo = priceRange ? priceRange.to : '';
         try {
-            const url =`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}`
+            const url =`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}`
             console.log('url: ', url)
             const response = await fetch(url, {
                 method: 'GET',
@@ -53,7 +53,7 @@ const WinesPaper = () => {
     }
     useEffect(() => {
         winesDataFetch();
-    }, [type, search, favourites])
+    }, [type, search, favourites, priceRange])
 
     // Handle region for scroll button
     const [uniqueRegions, setUniqueRegions] = useState([]);
@@ -197,6 +197,7 @@ const WinesPaper = () => {
                                         <h2>{region.region}</h2>
                                         {
                                             region.data.map((company, companyIndex) => (
+                                                
                                                 <CompanyCard key={companyIndex} data={company} />
                                             ))
                                         }

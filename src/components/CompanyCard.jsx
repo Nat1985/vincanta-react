@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import WineLine from "./WineLine";
+import { useSelector } from "react-redux";
 
 const CompanyCard = ({ data }) => {
+    const { priceRange } = useSelector(state => state.query);
     return (
         <div className="w-[320px] md:w-full flex flex-col gap-2 p-4 border-2 rounded">
 
