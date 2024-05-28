@@ -11,6 +11,8 @@ import PasswordReset from './pages/PasswordReset.jsx';
 import SetNewPassword from './pages/SetNewPassword.jsx';
 import { checkToken, getLogged, getUnlogged } from './redux/userSlice.js';
 import FetchLoader from './components/FetchLoader.jsx';
+import FoodPaper from './pages/FoodPaper.jsx';
+import AddEditFood from './pages/addEditFood.jsx';
 
 function App() {
   const token = localStorage.getItem('vincanta-token');
@@ -46,6 +48,8 @@ function App() {
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/reset-password" element={<PasswordReset />} />
         <Route exact path="/set-new-password" element={<SetNewPassword />} />
+        <Route exact path="/food" element={<FoodPaper />} />
+        <Route exact path="/add-edit-food" element={<AddEditFood />} />
       </Routes>
     </Router>
   );
