@@ -89,7 +89,7 @@ const FoodLine = ({ data }) => {
                     <div className="flex flex-col items-start text-start">
                         <h3>{data.name}</h3>
                         <div className="md:mt-[-10px] text-neutral-400 flex flex-col md:flex-row md:gap-2 text-sm">
-                            {data.allergens.length > 0 && <div>Allergeni:</div>}
+                            {data.allergens.length > 0 && <div className="underline">Allergeni:</div>}
                             <div className="flex gap-0 md:gap-1 flex-col md:flex-row">
                                 {data.allergens.map((element, index) => (<div key={index} >{element}</div>))}
                             </div>
