@@ -42,7 +42,7 @@ const PriceRange = ({ setUniqueCountries, setUniqueRegions }) => {
             <h5>Intervallo di prezzo</h5>
             {
                 !priceRange &&
-                <div className="flex gap-4 items-center">
+                <div className="flex flex-col md:flex-row gap-4 items-center">
                     <div className="flex gap-2 items-center">
                         <label htmlFor="from">Da:</label>
                         <input type="number" id="from" className="w-24" onChange={handlePriceInput} value={priceInput ? priceInput.from : ''} />
@@ -51,15 +51,7 @@ const PriceRange = ({ setUniqueCountries, setUniqueRegions }) => {
                         <label htmlFor="to">a:</label>
                         <input type="number" id="to" className="w-24" onChange={handlePriceInput} value={priceInput ? priceInput.to : ''} />
                     </div>
-                    <div className="flex flex-col pl-2 border-l-2">
-                        {/* <div className="flex gap-2">
-                            <input type="checkbox" id="isTable" checked={options.isTable ? true : false} onChange={handleSetOptions} />
-                            <label htmlFor="isTable">Tavolo</label>
-                        </div>
-                        <div className="flex gap-2">
-                            <input type="checkbox" id="isTakeAway" checked={options.isTakeAway ? true : false} onChange={handleSetOptions} />
-                            <label htmlFor="isDevlivery">Asporto</label>
-                        </div> */}
+                    <div className="flex flex-col pl-2 md:border-l-2">
                         <select name="option" id="option" onChange={handleSetOption}>
                             <option value="Tavolo">Tavolo</option>
                             <option value="Asporto">Asporto</option>
