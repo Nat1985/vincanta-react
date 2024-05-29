@@ -12,6 +12,8 @@ import PriceRange from "../components/PriceRange.jsx";
 const WinesPaper = () => {
 
     const dispatch = useDispatch();
+    // Check for login
+    const { isLogged } = useSelector(state => state.user);
     // Check mode and type
     const mode = useSelector(state => state.mode);
     const { type, search, favourites, priceRange } = useSelector(state => state.query);
@@ -66,7 +68,7 @@ const WinesPaper = () => {
             let countries = [];
             let isChampagne;
             winesData.map(element => {
-                if(element.country !== 'Champagne') {
+                if (element.country !== 'Champagne') {
                     countries.push(element.country)
                 } else {
                     isChampagne = true;
@@ -204,10 +206,10 @@ const WinesPaper = () => {
                 </div> */}
 
             {/* Seleziona priceRange */}
-            <PriceRange setUniqueCountries={setUniqueCountries} setUniqueRegions={setUniqueRegions}/>
+            <PriceRange setUniqueCountries={setUniqueCountries} setUniqueRegions={setUniqueRegions} />
 
             {
-                mode.mode === 'edit' &&
+                isLogged &&
                 <div className="flex flex-col gap-2">
                     <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
                         <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>

@@ -52,7 +52,7 @@ const FoodLine = ({ data }) => {
 
             {/* edit */}
             <div className="flex flex-col items-start">
-                <div className="flex gap-4">
+                <div className="flex flex-col md:flex-row gap-4">
                     {
                         mode === 'edit' && !isDeleting && fetchStatus === 'idle' &&
                         <div className="flex gap-4 items-center">
@@ -86,11 +86,11 @@ const FoodLine = ({ data }) => {
                         </div>
                     }
 
-                    <div className="flex flex-col items-start">
+                    <div className="flex flex-col items-start text-start">
                         <h3>{data.name}</h3>
-                        <div className="mt-[-10px] text-neutral-400 flex gap-2 text-sm">
+                        <div className="md:mt-[-10px] text-neutral-400 flex flex-col md:flex-row md:gap-2 text-sm">
                             {data.allergens.length > 0 && <div>Allergeni:</div>}
-                            <div className="flex gap-1">
+                            <div className="flex gap-0 md:gap-1 flex-col md:flex-row">
                                 {data.allergens.map((element, index) => (<div key={index} >{element}</div>))}
                             </div>
                         </div>
