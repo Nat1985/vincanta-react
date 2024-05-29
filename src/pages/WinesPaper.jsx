@@ -8,6 +8,7 @@ import TypeBar from "../components/TypeBar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import { getFavourites, setSearch } from "../redux/querySlice.js";
 import PriceRange from "../components/PriceRange.jsx";
+import useScrollPosition from "../tools/useScrollPosition.js";
 
 const WinesPaper = () => {
 
@@ -63,9 +64,9 @@ const WinesPaper = () => {
     const [uniqueContries, setUniqueCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [uniqueRegions, setUniqueRegions] = useState([]);
-    useEffect(() => {console.log('uniqueContries: ', uniqueContries)}, [uniqueContries]);
-    useEffect(() => {console.log('selectedCountry: ', selectedCountry)}, [selectedCountry]);
-    useEffect(() => {console.log('uniqueRegions: ', uniqueRegions)}, [uniqueRegions]);
+    useEffect(() => { console.log('uniqueContries: ', uniqueContries) }, [uniqueContries]);
+    useEffect(() => { console.log('selectedCountry: ', selectedCountry) }, [selectedCountry]);
+    useEffect(() => { console.log('uniqueRegions: ', uniqueRegions) }, [uniqueRegions]);
     useEffect(() => {
         if (winesData) {
             // Imposto nazioni
@@ -85,16 +86,12 @@ const WinesPaper = () => {
 
     // Imposto regioni dopo che è selezionato country
     useEffect(() => {
-        if(selectedCountry) {
+        if (selectedCountry) {
             if (selectedCountry === 'Italia' || selectedCountry === 'Francia' || selectedCountry === 'Champagne') {
                 // Se selezionate Italia, Francia o Champagne
-                console.log('winesData: ', winesData);
                 let countryData = winesData.filter(element => element.country === selectedCountry);
-                console.log('countryData: ', countryData);
                 let regionsData = countryData[0].data;
-                console.log('regionsData: ', regionsData);
-                let regions = regionsData.map(element => {return element.region});
-                console.log('regions: ', regions)
+                let regions = regionsData.map(element => { return element.region });
                 setUniqueRegions(regions);
             } else {
                 scrollToRegion(selectedCountry);
@@ -102,10 +99,16 @@ const WinesPaper = () => {
         }
     }, [selectedCountry])
 
+    const scrollPosition = useScrollPosition();
     const scrollToRegion = (region) => { // agisce sia su nazioni che su regioni
         const regionRef = document.getElementById(region);
         if (regionRef) {
             regionRef.scrollIntoView({ behavior: 'smooth' })
+            // dopo 1 secondo dallo scroll, azzero selectedCountry e uniqueRegions
+            setTimeout(() => {
+                setSelectedCountry(null);
+                setUniqueRegions([]);
+            }, 1000)
         }
     }
 
@@ -186,10 +189,13 @@ const WinesPaper = () => {
                 </div>
             }
 
+            {/* Seleziona priceRange */}
+            <PriceRange setUniqueCountries={setUniqueCountries} setUniqueRegions={setUniqueRegions} />
+
             {/* Selezione NAZIONI */}
             <div className="flex flex-col gap2">
                 <h2 className="font-thin">Nazione:</h2>
-                <select name="regions" id="regions" onChange={(e) => setSelectedCountry(e.target.value)}>
+                <select name="regions" id="regions" onChange={(e) => setSelectedCountry(e.target.value)} value={selectedCountry ? selectedCountry : ''}>
                     <option value=""></option>
                     {
                         uniqueContries.map((element, index) => (
@@ -202,26 +208,16 @@ const WinesPaper = () => {
             {
                 (selectedCountry === 'Italia' || selectedCountry === 'Francia' || selectedCountry === 'Champagne') &&
                 <div className="flex flex-col gap2">
-                <h2 className="font-thin">Regione:</h2>
-                <select name="regions" id="regions" onChange={(e) => scrollToRegion(e.target.value)}>
-                    <option value=""></option>
-                    {
-                        uniqueRegions.map((element, index) => (
-                            <option key={index} value={element}>{element}</option>
-                        ))
-                    }
-                </select>
-            </div>}
-            {/* <div className="flex flex-wrap gap-2 justify-center">
-                {
-                        uniqueRegions.map((element, index) => (
-                            <div key={index} className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
-                        ))
-                    }
-                </div> */}
-
-            {/* Seleziona priceRange */}
-            <PriceRange setUniqueCountries={setUniqueCountries} setUniqueRegions={setUniqueRegions} />
+                    <h2 className="font-thin">Regione:</h2>
+                    <select name="regions" id="regions" onChange={(e) => scrollToRegion(e.target.value)}>
+                        <option value=""></option>
+                        {
+                            uniqueRegions.map((element, index) => (
+                                <option key={index} value={element}>{element}</option>
+                            ))
+                        }
+                    </select>
+                </div>}
 
             {
                 isLogged &&
