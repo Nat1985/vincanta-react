@@ -27,7 +27,8 @@ const querySlice = createSlice({
         setPriceRange: (state, action) => {
             state.priceRange = {
                 from: action.payload.from,
-                to: action.payload.to
+                to: action.payload.to,
+                option: action.payload.option
             }
         },
         setRangeNull: (state) => {

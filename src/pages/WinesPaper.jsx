@@ -28,8 +28,10 @@ const WinesPaper = () => {
         const label = type ? 'type' : (search ? 'search' : (favourites ? 'favourites' : ''));
         const rangeFrom = priceRange ? priceRange.from : '';
         const rangeTo = priceRange ? priceRange.to : '';
+        const option = priceRange ? priceRange.option : '';
+        console.log('option in fetch: ', option)
         try {
-            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}`
+            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}&option=${option}`
             console.log('url: ', url)
             const response = await fetch(url, {
                 method: 'GET',
