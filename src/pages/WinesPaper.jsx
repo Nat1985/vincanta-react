@@ -61,7 +61,11 @@ const WinesPaper = () => {
 
     // Handle NATION and REGION for scroll button
     const [uniqueContries, setUniqueCountries] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const [uniqueRegions, setUniqueRegions] = useState([]);
+    useEffect(() => {console.log('uniqueContries: ', uniqueContries)}, [uniqueContries]);
+    useEffect(() => {console.log('selectedCountry: ', selectedCountry)}, [selectedCountry]);
+    useEffect(() => {console.log('uniqueRegions: ', uniqueRegions)}, [uniqueRegions]);
     useEffect(() => {
         if (winesData) {
             // Imposto nazioni
@@ -76,19 +80,28 @@ const WinesPaper = () => {
             });
             if (isChampagne) countries.push('Champagne');
             setUniqueCountries(countries);
-            // Imposto regioni
-            const extractRegions = (data) => {
-                return data.flatMap((element => {
-                    if (element.data) {
-                        return element.region ? [element.region, ...extractRegions(element.data)] : extractRegions(element.data);
-                    }
-                    return element.region ? [element.region] : [];
-                }))
-            }
-            const regions = Array.from(new Set(winesData.flatMap(element => extractRegions(element.data))));
-            setUniqueRegions(regions);
         }
     }, [winesData])
+
+    // Imposto regioni dopo che è selezionato country
+    useEffect(() => {
+        if(selectedCountry) {
+            if (selectedCountry === 'Italia' || selectedCountry === 'Francia' || selectedCountry === 'Champagne') {
+                // Se selezionate Italia, Francia o Champagne
+                console.log('winesData: ', winesData);
+                let countryData = winesData.filter(element => element.country === selectedCountry);
+                console.log('countryData: ', countryData);
+                let regionsData = countryData[0].data;
+                console.log('regionsData: ', regionsData);
+                let regions = regionsData.map(element => {return element.region});
+                console.log('regions: ', regions)
+                setUniqueRegions(regions);
+            } else {
+                scrollToRegion(selectedCountry);
+            }
+        }
+    }, [selectedCountry])
+
     const scrollToRegion = (region) => { // agisce sia su nazioni che su regioni
         const regionRef = document.getElementById(region);
         if (regionRef) {
@@ -175,8 +188,8 @@ const WinesPaper = () => {
 
             {/* Selezione NAZIONI */}
             <div className="flex flex-col gap2">
-                <h2 className="font-thin">Nazioni:</h2>
-                <select name="regions" id="regions" onChange={(e) => scrollToRegion(e.target.value)}>
+                <h2 className="font-thin">Nazione:</h2>
+                <select name="regions" id="regions" onChange={(e) => setSelectedCountry(e.target.value)}>
                     <option value=""></option>
                     {
                         uniqueContries.map((element, index) => (
@@ -186,8 +199,10 @@ const WinesPaper = () => {
                 </select>
             </div>
             {/* Selezione REGIONI */}
-            <div className="flex flex-col gap2">
-                <h2 className="font-thin">Regioni:</h2>
+            {
+                (selectedCountry === 'Italia' || selectedCountry === 'Francia' || selectedCountry === 'Champagne') &&
+                <div className="flex flex-col gap2">
+                <h2 className="font-thin">Regione:</h2>
                 <select name="regions" id="regions" onChange={(e) => scrollToRegion(e.target.value)}>
                     <option value=""></option>
                     {
@@ -196,7 +211,7 @@ const WinesPaper = () => {
                         ))
                     }
                 </select>
-            </div>
+            </div>}
             {/* <div className="flex flex-wrap gap-2 justify-center">
                 {
                         uniqueRegions.map((element, index) => (
