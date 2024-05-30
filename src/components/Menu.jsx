@@ -2,30 +2,50 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import { selectMode } from '../redux/modeSlice';
-import { getFavourites } from '../redux/querySlice';
+import { getFavourites, setSearch } from '../redux/querySlice';
+import { getUnlogged } from '../redux/userSlice';
+import { setShow } from '../redux/menuSlice';
+import { setFoodMode } from '../redux/foodDataSlice';
 
 const Menu = () => {
+    const { isLogged } = useSelector(state => state.user);
     const mode = useSelector(state => state.mode)
     const dispatch = useDispatch();
-    const [showMenu, setShowMenu] = useState(0);
-    const handleMode = (mode) => {
-        let currentScrollHeight;
-        dispatch(selectMode({mode}))
+    const navigate = useNavigate();
+    /* const [showMenu, setShowMenu] = useState(0); */
+    const { isShow } = useSelector(state => state.menu);
+    useEffect(() => {
+        console.log('isShow: ', isShow);
+    }, [isShow])
+
+    // handle logout
+    const handleLogout = () => {
+        localStorage.removeItem('vincanta-token');
+        dispatch(getUnlogged());
+        window.location.href = "/"
     }
+
     return (
         <div className='fixed top-2 right-2'>
             {
-                showMenu ? (
+                isShow ? (
                     <div className="flex flex-col gap-2 border-2 border-[#782a76] bg-white bg-opacity-90 p-2 rounded-xl">
-                        <i class="fi fi-ss-circle-xmark text-end text-[#782a76] cursor-pointer" onClick={() => setShowMenu(0)}></i>
-                        <div className="list-none mx-4 text-[#782a76] leading-[50px]">
-                            <Link to="/"><div className="cursor-pointer bg-[#782a76] text-white px-2 rounded" onClick={() => { handleMode('show'); setShowMenu(0) }}>Carta dei vini</div></Link>
-                            <Link to="/"><div className="cursor-pointer" onClick={() => { handleMode('edit'); setShowMenu(0) }}>Gestisci prodotti</div></Link>
-                            <div className="cursor-pointer flex gap-2" onClick={() => dispatch(getFavourites(true))}><div className='mt-[3px]'><i class="fi fi-sr-heart text-red-500"></i></div> Preferiti</div>
+                        <i class="fi fi-ss-circle-xmark text-end text-[#782a76] cursor-pointer" onClick={() => dispatch(setShow(false))}></i>
+                        <div className="list-none mx-4 text-[#782a76] leading-[50px] flex flex-col items-end gap-2">
+                            <div className="cursor-pointer bg-[#782a76] text-white px-2 rounded" onClick={() => { dispatch(getFavourites(false)); dispatch(selectMode({mode: 'show'})); dispatch(setShow(false)); navigate("/") }}>Carta dei vini</div>
+                            <div className="cursor-pointer bg-[#782a76] text-white px-2 rounded" onClick={() => { dispatch(getFavourites(false)); dispatch(setFoodMode('show')); dispatch(setShow(false)); navigate("/food") }}>Carta food</div>
+                            {/* <div className="cursor-pointer flex gap-2" onClick={() => { dispatch(getFavourites(true)); dispatch(setShow(false)) }}>Preferiti <div className='mt-[3px]'><i class="fi fi-sr-heart text-red-500"></i></div></div> */}
+                            {isLogged && <div className="cursor-pointer" onClick={() => { dispatch(selectMode({mode: 'edit'})); dispatch(setShow(false)); navigate("/") }}>Gestisci vini</div>}
+                            {isLogged && <div className="cursor-pointer" onClick={() => { dispatch(setFoodMode('edit')); dispatch(setShow(false)); navigate("/food") }}>Gestisci food</div>}
+                            {isLogged && <div className="cursor-pointer px-3 border rounded w-fit" onClick={() => { handleLogout(); dispatch(setShow(false)) }}>Logout</div>}
+                            {!isLogged && <div className="cursor-pointer px-3 border rounded w-fit" onClick={() => { dispatch(setShow(false)); navigate("/login") }}>Login</div>}
                         </div>
                     </div>
                 ) : (
-                    <i class="fi fi-sr-apps text-[#782a76] cursor-pointer text-4xl" onClick={() => setShowMenu(1)}></i>
+                    <div>
+                        {isLogged && <i className="fi fi-sr-apps text-[#782a76] cursor-pointer text-4xl" onClick={() => dispatch(setShow(true))}></i>}
+                        {!isLogged && <i className="fi fi-rr-apps text-[#782a76] cursor-pointer text-4xl" onClick={() => dispatch(setShow(true))}></i>}
+                    </div>
                 )
             }
         </div>

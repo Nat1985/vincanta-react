@@ -7,24 +7,36 @@ import wineSelection from '../static/images/wine_selection.png'
 import TypeBar from "../components/TypeBar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import { getFavourites, setSearch } from "../redux/querySlice.js";
+import PriceRange from "../components/PriceRange.jsx";
+import useScrollPosition from "../tools/useScrollPosition.js";
 
 const WinesPaper = () => {
 
     const dispatch = useDispatch();
+    // Check for login
+    const { isLogged } = useSelector(state => state.user);
     // Check mode and type
     const mode = useSelector(state => state.mode);
-    const { type, search, favourites } = useSelector(state => state.query);
-
+    const { type, search, favourites, priceRange } = useSelector(state => state.query);
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
+    useEffect(() => {
+        console.log('winesData: ', winesData)
+    }, [winesData])
     const [fetchStatus, setFetchStatus] = useState('idle');
     const [error, setError] = useState(null);
     const winesDataFetch = async () => {
         setFetchStatus('loading');
         const extendedUrl = type || search || favourites || '';
-        const label = type ? 'type' : (search ? 'search' : (favourites ? 'favourites' : ''))
+        const label = type ? 'type' : (search ? 'search' : (favourites ? 'favourites' : ''));
+        const rangeFrom = priceRange ? priceRange.from : '';
+        const rangeTo = priceRange ? priceRange.to : '';
+        const option = priceRange ? priceRange.option : '';
+        console.log('option in fetch: ', option)
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}`, {
+            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}&option=${option}`
+            console.log('url: ', url)
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -46,28 +58,57 @@ const WinesPaper = () => {
     }
     useEffect(() => {
         winesDataFetch();
-    }, [type, search, favourites])
+    }, [type, search, favourites, priceRange])
 
-    // Handle region for scroll button
+    // Handle NATION and REGION for scroll button
+    const [uniqueContries, setUniqueCountries] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const [uniqueRegions, setUniqueRegions] = useState([]);
+    useEffect(() => { console.log('uniqueContries: ', uniqueContries) }, [uniqueContries]);
+    useEffect(() => { console.log('selectedCountry: ', selectedCountry) }, [selectedCountry]);
+    useEffect(() => { console.log('uniqueRegions: ', uniqueRegions) }, [uniqueRegions]);
     useEffect(() => {
-        const extractRegions = (data) => {
-            return data.flatMap((element => {
-                if (element.data) {
-                    return element.region ? [element.region, ...extractRegions(element.data)] : extractRegions(element.data);
-                }
-                return element.region ? [element.region] : [];
-            }))
-        }
         if (winesData) {
-            const regions = Array.from(new Set(winesData.flatMap(element => extractRegions(element.data))));
-            setUniqueRegions(regions);
+            // Imposto nazioni
+            let countries = [];
+            let isChampagne;
+            winesData.map(element => {
+                if (element.country !== 'Champagne') {
+                    countries.push(element.country)
+                } else {
+                    isChampagne = true;
+                }
+            });
+            if (isChampagne) countries.push('Champagne');
+            setUniqueCountries(countries);
         }
     }, [winesData])
-    const scrollToRegion = (region) => {
+
+    // Imposto regioni dopo che è selezionato country
+    useEffect(() => {
+        if (selectedCountry) {
+            if (selectedCountry === 'Italia' || selectedCountry === 'Francia' || selectedCountry === 'Champagne') {
+                // Se selezionate Italia, Francia o Champagne
+                let countryData = winesData.filter(element => element.country === selectedCountry);
+                let regionsData = countryData[0].data;
+                let regions = regionsData.map(element => { return element.region });
+                setUniqueRegions(regions);
+            } else {
+                scrollToRegion(selectedCountry);
+            }
+        }
+    }, [selectedCountry])
+
+    const scrollPosition = useScrollPosition();
+    const scrollToRegion = (region) => { // agisce sia su nazioni che su regioni
         const regionRef = document.getElementById(region);
         if (regionRef) {
             regionRef.scrollIntoView({ behavior: 'smooth' })
+            // dopo 1 secondo dallo scroll, azzero selectedCountry e uniqueRegions
+            setTimeout(() => {
+                setSelectedCountry(null);
+                setUniqueRegions([]);
+            }, 1000)
         }
     }
 
@@ -121,6 +162,9 @@ const WinesPaper = () => {
             {mode.mode === 'edit' && <h2>Gestisci prodotti</h2>}
             {mode.mode === 'show' && <img src={wineSelection} />}
 
+            {/* Search Bar */}
+            <SearchBar />
+
             {/* Type select */}
             {!search && !favourites && <TypeBar />}
 
@@ -145,29 +189,44 @@ const WinesPaper = () => {
                 </div>
             }
 
-            {/* Region buttons */}
-            <div className="flex flex-col gap-2 items-center">
-                <h2 className="font-thin">Regioni:</h2>
-                <div className="flex flex-wrap gap-2 justify-center">
+            {/* Seleziona priceRange */}
+            <PriceRange setUniqueCountries={setUniqueCountries} setUniqueRegions={setUniqueRegions} />
+
+            {/* Selezione NAZIONI */}
+            <div className="flex flex-col gap2">
+                <h2 className="font-thin">Nazione:</h2>
+                <select name="regions" id="regions" onChange={(e) => setSelectedCountry(e.target.value)} value={selectedCountry ? selectedCountry : ''}>
+                    <option value=""></option>
                     {
-                        uniqueRegions.map(element => (
-                            <div className="py-1 px-2 bg-fuchsia-50 rounded font-thin cursor-pointer" onClick={() => scrollToRegion(element)}>{element}</div>
+                        uniqueContries.map((element, index) => (
+                            <option key={index} value={element}>{element}</option>
                         ))
                     }
-                </div>
+                </select>
             </div>
-
-            {/* Search Bar */}
-            <SearchBar />
+            {/* Selezione REGIONI */}
+            {
+                (selectedCountry === 'Italia' || selectedCountry === 'Francia' || selectedCountry === 'Champagne') &&
+                <div className="flex flex-col gap2">
+                    <h2 className="font-thin">Regione:</h2>
+                    <select name="regions" id="regions" onChange={(e) => scrollToRegion(e.target.value)}>
+                        <option value=""></option>
+                        {
+                            uniqueRegions.map((element, index) => (
+                                <option key={index} value={element}>{element}</option>
+                            ))
+                        }
+                    </select>
+                </div>}
 
             {
-                mode.mode === 'edit' &&
+                isLogged &&
                 <div className="flex flex-col gap-2">
                     <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
                         <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>
                         Aggiungi prodotto
                     </div></Link>
-                        {wineCounter && <div className="text-sm">(<span className="text-[#782a76] font-bold">{wineCounter}</span> vini totali)</div>}
+                    {wineCounter && <div className="text-sm">(<span className="text-[#782a76] font-bold">{wineCounter}</span> vini totali)</div>}
                 </div>
 
             }
@@ -178,7 +237,7 @@ const WinesPaper = () => {
                     fetchStatus === 'succeeded' &&
                     winesData &&
                     winesData.map((element, index) => (
-                        <div className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center">
+                        <div key={index} className="w-full p-2 border-1 border-red flex flex-col gap-4 items-center" id={element.country}>
                             {index !== 0 && <hr className="w-full" />}
                             <h1>{element.country}</h1>
                             {
@@ -187,6 +246,7 @@ const WinesPaper = () => {
                                         <h2>{region.region}</h2>
                                         {
                                             region.data.map((company, companyIndex) => (
+
                                                 <CompanyCard key={companyIndex} data={company} />
                                             ))
                                         }

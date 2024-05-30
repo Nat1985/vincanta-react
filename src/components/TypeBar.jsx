@@ -15,9 +15,6 @@ const TypeBar = () => {
     const dispatch = useDispatch();
     // check type from Redux
     const currentType = useSelector(state => state.query.type);
-    useEffect(() => {
-        console.log('currentType: ', currentType)
-    }, [currentType])
     const setType = (type) => {
         dispatch(selectType(type))
     };

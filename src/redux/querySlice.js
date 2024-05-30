@@ -1,11 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const querySlice = createSlice({
     name: 'query',
     initialState: {
         type: '',
         search: '',
-        favourites: false
+        favourites: false,
+        priceRange: null,
     },
     reducers: {
         selectType: (state, action) => {
@@ -22,9 +23,19 @@ const querySlice = createSlice({
             state.favourites = action.payload;
             state.type = '';
             state.search = '';
+        },
+        setPriceRange: (state, action) => {
+            state.priceRange = {
+                from: action.payload.from,
+                to: action.payload.to,
+                option: action.payload.option
+            }
+        },
+        setRangeNull: (state) => {
+            state.priceRange = null;
         }
     }
 })
 
-export const { selectType, setSearch, getFavourites } = querySlice.actions;
+export const { selectType, setSearch, getFavourites, setPriceRange, setRangeNull } = querySlice.actions;
 export default querySlice.reducer;
