@@ -7,7 +7,6 @@ const menuSlice = createSlice({
     },
     reducers: {
         setShow: (state, action) => {
-            console.log('eccolo: ', action.payload)
             state.isShow = action.payload;
         }
     }

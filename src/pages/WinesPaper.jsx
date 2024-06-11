@@ -9,6 +9,7 @@ import SearchBar from "../components/SearchBar.jsx";
 import { getFavourites, setSearch } from "../redux/querySlice.js";
 import PriceRange from "../components/PriceRange.jsx";
 import useScrollPosition from "../tools/useScrollPosition.js";
+import VolumeRange from "../components/VolumeRange.jsx";
 
 const WinesPaper = () => {
 
@@ -17,7 +18,7 @@ const WinesPaper = () => {
     const { isLogged } = useSelector(state => state.user);
     // Check mode and type
     const mode = useSelector(state => state.mode);
-    const { type, search, favourites, priceRange } = useSelector(state => state.query);
+    const { type, search, favourites, priceRange, volumeRange } = useSelector(state => state.query);
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
     useEffect(() => {
@@ -32,9 +33,9 @@ const WinesPaper = () => {
         const rangeFrom = priceRange ? priceRange.from : '';
         const rangeTo = priceRange ? priceRange.to : '';
         const option = priceRange ? priceRange.option : '';
-        console.log('option in fetch: ', option)
+        const volume = volumeRange ? volumeRange : '';
         try {
-            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}&option=${option}`
+            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}&option=${option}&volume=${volume}`
             console.log('url: ', url)
             const response = await fetch(url, {
                 method: 'GET',
@@ -58,7 +59,7 @@ const WinesPaper = () => {
     }
     useEffect(() => {
         winesDataFetch();
-    }, [type, search, favourites, priceRange])
+    }, [type, search, favourites, priceRange, volumeRange])
 
     // Handle NATION and REGION for scroll button
     const [uniqueContries, setUniqueCountries] = useState([]);
@@ -191,6 +192,9 @@ const WinesPaper = () => {
 
             {/* Seleziona priceRange */}
             <PriceRange setUniqueCountries={setUniqueCountries} setUniqueRegions={setUniqueRegions} />
+
+            {/* Seleziona volumeRange */}
+            <VolumeRange />
 
             {/* Selezione NAZIONI */}
             <div className="flex flex-col gap2">

@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPriceRange, setRangeNull } from "../redux/querySlice";
 import { NoBgButton } from './buttons.jsx'
 
-// Il range di prezzo viene calcolato da frontend
+
+// Il price range viene calcolato da front-end
 const PriceRange = ({ setUniqueCountries, setUniqueRegions }) => {
     const dispatch = useDispatch();
     const { priceRange } = useSelector(state => state.query);

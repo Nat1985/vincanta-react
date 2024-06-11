@@ -7,6 +7,7 @@ const querySlice = createSlice({
         search: '',
         favourites: false,
         priceRange: null,
+        volumeRange: null,
     },
     reducers: {
         selectType: (state, action) => {
@@ -33,9 +34,16 @@ const querySlice = createSlice({
         },
         setRangeNull: (state) => {
             state.priceRange = null;
+        },
+        setVolumeRange: (state, action) => {
+            console.log('here: ', action.payload)
+            state.volumeRange = action.payload
+        },
+        setVolumeNull: (state) => {
+            state.volumeRange = null
         }
     }
 })
 
-export const { selectType, setSearch, getFavourites, setPriceRange, setRangeNull } = querySlice.actions;
+export const { selectType, setSearch, getFavourites, setPriceRange, setRangeNull, setVolumeRange, setVolumeNull } = querySlice.actions;
 export default querySlice.reducer;
