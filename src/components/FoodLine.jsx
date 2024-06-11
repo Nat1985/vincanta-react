@@ -86,7 +86,7 @@ const FoodLine = ({ data }) => {
                         </div>
                     }
 
-                    <div className="flex flex-col items-start text-start">
+                    <div className="flex flex-col items-start text-start gap-3">
                         <h4>{data.name}</h4>
                         <div className="md:mt-[-5px] flex flex-row gap-2 text-sm">
                             {data.allergens.length > 0 && <div className="underline text-[#782a76]">Allergeni:</div>}
