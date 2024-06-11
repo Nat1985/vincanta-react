@@ -86,12 +86,12 @@ const FoodLine = ({ data }) => {
                         </div>
                     }
 
-                    <div className="flex flex-col items-start text-start">
-                        <h3>{data.name}</h3>
-                        <div className="md:mt-[-10px] text-neutral-400 flex flex-col md:flex-row md:gap-2 text-sm">
-                            {data.allergens.length > 0 && <div className="underline">Allergeni:</div>}
-                            <div className="flex gap-0 md:gap-1 flex-col md:flex-row">
-                                {data.allergens.map((element, index) => (<div key={index} >{element}</div>))}
+                    <div className="flex flex-col items-start text-start gap-3">
+                        <h4>{data.name}</h4>
+                        <div className="md:mt-[-5px] flex flex-row gap-2 text-sm">
+                            {data.allergens.length > 0 && <div className="underline text-[#782a76]">Allergeni:</div>}
+                            <div className="flex gap-1 flex-row">
+                                {data.allergens.map((element, index) => (<div key={index} className="bg-fuchsia-100 px-1 font-thin rounded" >{element}</div>))}
                             </div>
                         </div>
                         <h5>{data.notes}</h5>

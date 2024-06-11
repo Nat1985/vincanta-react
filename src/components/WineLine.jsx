@@ -73,10 +73,6 @@ const WineLine = ({ wineData }) => {
                                 {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
                                 {wineData && wineData.favourite && <i class="fi fi-sr-heart text-red-500"></i>}
                                 {
-                                    wineData && wineData.champagneCategory &&
-                                    <CatLabel cat={wineData.champagneCategory} />
-                                }
-                                {
                                     wineData && wineData.sboccatura.isTrue &&
                                     <SboccLabel date={wineData.sboccatura.date} />
                                 }

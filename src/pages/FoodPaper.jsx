@@ -1,13 +1,34 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFoodData } from "../redux/foodDataSlice";
+import { getFoodData, setFoodMode } from "../redux/foodDataSlice";
 import FoodLine from "../components/FoodLine";
 import { Link } from "react-router-dom";
+
+import starter1 from '../static/images/food/starter1.png';
+import starter2 from '../static/images/food/starter2.png';
+import starter3 from '../static/images/food/starter3.png';
+import first1 from '../static/images/food/first1.png';
+import first2 from '../static/images/food/first2.png';
+import first3 from '../static/images/food/first3.png';
+import second1 from '../static/images/food/second1.png';
+import second2 from '../static/images/food/second2.png';
+import second3 from '../static/images/food/second3.png';
+import side1 from '../static/images/food/side1.png';
+import side2 from '../static/images/food/side2.png';
+import side3 from '../static/images/food/side3.png';
 
 const FoodPaper = () => {
 
     // check mode
     const { mode } = useSelector(state => state.foodData);
+    // check query
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const mode = params.get('mode');
+        if(mode) {
+            dispatch(setFoodMode(mode))
+        }
+    }, [])
 
     // food fetch
     const dispatch = useDispatch();
@@ -49,6 +70,11 @@ const FoodPaper = () => {
                 data && courses.includes('Antipasto') &&
                 <div className="flex flex-col gap-2 items-center w-full md:w-fit">
                     <h2 className="font-thin">Antipasti</h2>
+                    <div className="flex gap-2 mb-4">
+                        <img src={starter1} className="w-12" />
+                        {/* <img src={starter2} className="w-12" />
+                        <img src={starter3} className="w-12" /> */}
+                    </div>
                     <div className="flex flex-col gap-2 w-full md:w-[700px] border rounded-xl p-2">
                         {
                             data.map((element, index) => {
@@ -66,6 +92,11 @@ const FoodPaper = () => {
                 data && courses.includes('Primo') &&
                 <div className="flex flex-col gap-2 items-center w-full md:w-fit">
                     <h2 className="font-thin">Primi</h2>
+                    <div className="flex gap-2 mb-4">
+                        <img src={first1} className="w-12" />
+                        {/* <img src={first2} className="w-12" />
+                        <img src={first3} className="w-12" /> */}
+                    </div>
                     <div className="flex flex-col gap-2 w-full md:w-[700px] border rounded-xl p-2">
                         {
                             data.map((element, index) => {
@@ -83,6 +114,11 @@ const FoodPaper = () => {
                 data && courses.includes('Secondo') &&
                 <div className="flex flex-col gap-2 items-center w-full md:w-fit">
                     <h2 className="font-thin">Secondi</h2>
+                    <div className="flex gap-2 mb-4">
+                        {/* <img src={second1} className="w-12" /> */}
+                        <img src={second2} className="w-12" />
+                        {/* <img src={second3} className="w-12" /> */}
+                    </div>
                     <div className="flex flex-col gap-2 w-full md:w-[700px] border rounded-xl p-2">
                         {
                             data.map((element, index) => {
@@ -100,6 +136,11 @@ const FoodPaper = () => {
                 data && courses.includes('Contorno') &&
                 <div className="flex flex-col gap-2 items-center w-full md:w-fit">
                     <h2 className="font-thin">Contorni</h2>
+                    <div className="flex gap-2 mb-4">
+                        {/* <img src={side1} className="w-12" /> */}
+                        <img src={side2} className="w-12" />
+                        {/* <img src={side3} className="w-12" /> */}
+                    </div>
                     <div className="flex flex-col gap-2 w-full md:w-[700px] border rounded-xl p-2">
                         {
                             data.map((element, index) => {
