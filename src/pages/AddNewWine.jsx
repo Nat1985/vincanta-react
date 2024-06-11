@@ -271,6 +271,7 @@ const AddNewWine = () => {
                                     {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Côte des Blancs">Côte des Blancs</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Vallée de la Marne">Vallée de la Marne</option>}
                                     {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Côte Des Bar e Aube">Côte Des Bar e Aube</option>}
+                                    {inputData && inputData.country === "Francia" && (inputData.type === 'champagne' || inputData.type === 'champagne-rosé') && <option value="Languedoc-Roussillon">Languedoc-Roussillon</option>}
                                 </select>
                             </div>}
                             {(inputData.country === 'italy' || inputData.country === 'france') && <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || inputData.region !== '' ? 'hidden' : ''}`}>Inserisci la regione</h4>}
