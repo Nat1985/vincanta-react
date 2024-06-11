@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFoodData } from "../redux/foodDataSlice";
+import { getFoodData, setFoodMode } from "../redux/foodDataSlice";
 import FoodLine from "../components/FoodLine";
 import { Link } from "react-router-dom";
 
@@ -21,6 +21,14 @@ const FoodPaper = () => {
 
     // check mode
     const { mode } = useSelector(state => state.foodData);
+    // check query
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const mode = params.get('mode');
+        if(mode) {
+            dispatch(setFoodMode(mode))
+        }
+    }, [])
 
     // food fetch
     const dispatch = useDispatch();

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import FetchLoader from "../components/FetchLoader";
+import { useDispatch } from 'react-redux';
+import { setFoodMode } from '../redux/foodDataSlice.js';
 
 const AddEditFood = () => {
 
@@ -72,6 +74,7 @@ const AddEditFood = () => {
     }
 
     // Send food data
+    const dispatch = useDispatch();
     const [fetchStatus, setFetchStatus] = useState('idle');
     const [error, setError] = useState(null);
     const sendFood = async () => {
@@ -97,7 +100,7 @@ const AddEditFood = () => {
                 const result = response.json();
                 setFetchStatus('succeeded');
                 setTimeout(() => {
-                    window.location.href = "/food"
+                    window.location.href = "/food?mode=edit";
                 }, 3000)
             } else {
                 const error = response.json();
