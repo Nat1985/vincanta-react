@@ -57,6 +57,7 @@ const AddNewWine = () => {
         award: false,
         sboccatura: false,
         sboccaturaDate: '',
+        isGoodValue: false,
         favourite: false,
         description: null,
     })
@@ -82,6 +83,7 @@ const AddNewWine = () => {
                     award: wineData.award,
                     sboccatura: wineData.sboccatura.isTrue,
                     sboccaturaDate: wineData.sboccatura.date,
+                    isGoodValue: wineData.isGoodValue,
                     favourite: wineData.favourite,
                     description: wineData.description,
                 })
@@ -326,24 +328,45 @@ const AddNewWine = () => {
                             </div>
                             <h4 className={`self-end mt-[-30px] text-sm text-red-400 ${!inputError || (inputData.tablePrice && inputData.takeAwayPrice) ? 'hidden' : ''}`}>Inserisci entrambi i prezzi</h4>
 
+                            {/* Award */}
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
-                                <i className="fi fi-rs-award text-yellow-500"></i><label htmlFor="awards">Award</label>
                                 <input type="checkbox" id="award" className="w-6 h-6" onChange={handleInputData} checked={inputData.award} />
+                                <div className="flex gap-2 border rounded px-2">
+                                    <i className="fi fi-rs-award mt-1 text-yellow-500"></i>
+                                    <label htmlFor="awards">Award</label>
+                                </div>
                             </div>
 
+                            {/* Preferiti */}
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
-                                <i class="fi fi-sr-heart text-red-500"></i><label htmlFor="favourite">Preferiti</label>
                                 <input type="checkbox" id="favourite" className="w-6 h-6" onChange={handleInputData} checked={inputData.favourite} />
+                                <div className="flex gap-2 border rounded px-2">
+                                    <i className="fi fi-sr-heart mt-1 text-red-500"></i>
+                                    <label htmlFor="favourite">Preferito</label>
+                                </div>
                             </div>
 
+                            {/* Buon rapporto qualità/prezzo */}
+                            {/* Preferiti */}
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
-                                <div className="flex gap-2 items-center mt-5">
-                                    <label htmlFor="sboccatura">Sboccatura</label>
+                                <input type="checkbox" id="isGoodValue" className="w-6 h-6 mt-1" onChange={handleInputData} checked={inputData.isGoodValue} />
+                                <div className="flex gap-2 border rounded px-2">
+                                    <i className="fi fi-rr-badge-check mt-1 text-green-400"></i>
+                                    <label htmlFor="isGoodValue">Buon rapporto qualità/prezzo</label>
+                                </div>
+                            </div>
+
+                            {/* Sboccatura */}
+                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center md:items-start">
+                                <div className="flex gap-2 items-center ">
                                     <input type="checkbox" id="sboccatura" className="w-6 h-6" onChange={handleInputData} checked={inputData.sboccatura} />
+                                    <div className="flex gap-2 border rounded px-2">
+                                        <label htmlFor="sboccatura">Sboccatura</label>
+                                    </div>
                                 </div>
                                 {
                                     inputData.sboccatura &&
-                                    <div className="flex gap-2 items-end">
+                                    <div className="flex gap-2 items-start">
                                         <label htmlFor="sboccaturaDate">Data:</label>
                                         <input type="text" id="sboccaturaDate" onChange={handleInputData} value={inputData.sboccaturaDate} />
                                     </div>

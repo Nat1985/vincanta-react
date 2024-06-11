@@ -17,10 +17,11 @@ const AddEditFood = () => {
         console.log('inputData: ', inputData)
     }, [inputData])
     const handleInputData = (event) => {
-        const { id, value } = event.target;
+        const { id, value, type, checked } = event.target;
+        let fixedValue = type === "checkbox" ? checked : value;
         setInputData(prevState => ({
             ...prevState,
-            [id]: value
+            [id]: fixedValue
         }))
     }
     const handleAllergensInput = (event) => {
@@ -202,6 +203,15 @@ const AddEditFood = () => {
                         <div className="flex gap-2">
                             <input type="checkbox" id="Molluschi" onChange={handleAllergensInput} checked={inputData.allergens && inputData.allergens.includes('Molluschi') ? true : false} />
                             <label htmlFor="Molluschi" className="text-[12pt]">Molluschi</label>
+                        </div>
+                    </div>
+
+                    {/* Congelato all'origine */}
+                    <div className="flex gap-2">
+                        <input type="checkbox" id="isFrozen" onChange={handleInputData} checked={inputData.isFrozen} />
+                        <div className="flex items-center gap-2 border rounded w-fit py-1 px-2">
+                            <i className="fi fi-rr-snowflakes text-blue-400"></i>
+                            <label htmlFor="isFrozen" className="text-[12pt]">Congelato all'origine</label>
                         </div>
                     </div>
 
