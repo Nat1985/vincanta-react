@@ -70,9 +70,10 @@ const WineLine = ({ wineData }) => {
                             </div>
                             <div>{wineData.name}</div>
                             <div className="pt-[5px] flex items-center gap-1">
+                                {wineData && wineData.isBio && <i className="fi fi-rr-leaf text-green-500"></i>}
                                 {wineData && wineData.award && <i className="fi fi-rs-award text-yellow-500"></i>}
                                 {wineData && wineData.favourite && <i className="fi fi-sr-heart text-red-500"></i>}
-                                {wineData && wineData.isGoodValue && <i className="fi fi-rr-badge-check text-green-400"></i>}
+                                {wineData && wineData.isGoodValue && <i className="fi fi-sr-euro text-blue-400"></i>}
                                 {
                                     wineData && wineData.sboccatura.isTrue &&
                                     <SboccLabel date={wineData.sboccatura.date} />

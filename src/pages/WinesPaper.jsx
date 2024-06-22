@@ -8,7 +8,6 @@ import TypeBar from "../components/TypeBar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import { getFavourites, setSearch } from "../redux/querySlice.js";
 import PriceRange from "../components/PriceRange.jsx";
-import useScrollPosition from "../tools/useScrollPosition.js";
 import VolumeRange from "../components/VolumeRange.jsx";
 
 const WinesPaper = () => {
@@ -65,9 +64,6 @@ const WinesPaper = () => {
     const [uniqueContries, setUniqueCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [uniqueRegions, setUniqueRegions] = useState([]);
-    useEffect(() => { console.log('uniqueContries: ', uniqueContries) }, [uniqueContries]);
-    useEffect(() => { console.log('selectedCountry: ', selectedCountry) }, [selectedCountry]);
-    useEffect(() => { console.log('uniqueRegions: ', uniqueRegions) }, [uniqueRegions]);
     useEffect(() => {
         if (winesData) {
             // Imposto nazioni
@@ -100,7 +96,6 @@ const WinesPaper = () => {
         }
     }, [selectedCountry])
 
-    const scrollPosition = useScrollPosition();
     const scrollToRegion = (region) => { // agisce sia su nazioni che su regioni
         const regionRef = document.getElementById(region);
         if (regionRef) {
@@ -122,12 +117,13 @@ const WinesPaper = () => {
 
     useEffect(() => {
         const targetElement = document.getElementById(scroll);
-        if (targetElement) {
+        console.log('tagert element: ', targetElement);
+        if (winesData && targetElement) {
             const scrollYOffset = -300;
             const scrollY = targetElement.getBoundingClientRect().top + window.pageYOffset + scrollYOffset;
             window.scrollTo({ top: scrollY, behavior: 'smooth' });
         }
-    }, [uniqueRegions])
+    }, [uniqueRegions, winesData])
 
     //Debug
     useEffect(() => {
