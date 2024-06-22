@@ -101,8 +101,12 @@ const AddEditFood = () => {
                 const result = response.json();
                 setFetchStatus('succeeded');
                 setTimeout(() => {
-                    window.location.href = "/food?mode=edit";
-                }, 3000)
+                    if(editId) {
+                        window.location.href = `/food?mode=edit&scroll=${editId}`
+                    } else {
+                        window.location.href = "/food?mode=edit";
+                    }
+                }, 2000)
             } else {
                 const error = response.json();
                 setError(error);
@@ -221,7 +225,7 @@ const AddEditFood = () => {
                         <textarea name="" id="notes" className="w-full" onChange={handleInputData} value={inputData.notes}></textarea>
                     </div>
 
-                    <div className="mb-8">
+                    <div className="mb-8 flex flex-col items-center">
                         {fetchStatus === 'idle' && <button className="bg-[#782a76] p-2 text-white" onClick={sendFood}>Salva</button>}
                         {fetchStatus === 'loading' && <FetchLoader />}
                         {fetchStatus === 'failed' && <h4>Qualcos è andato storto. Ricarica la pagina e riprova.</h4>}

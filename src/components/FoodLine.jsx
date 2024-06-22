@@ -33,7 +33,7 @@ const FoodLine = ({ data }) => {
                 setFetchStatus('succeeded');
                 setTimeout(() => {
                     window.location.href = "/food"
-                }, 3000)
+                }, 2000)
             } else {
                 const error = await response.json();
                 setError(error);
@@ -48,7 +48,7 @@ const FoodLine = ({ data }) => {
     }
 
     return (
-        <div className={`w-full flex gap-2 justify-between items-center p-2 border rounded ${mode === 'edit' ? 'bg-red-50' : ''}`}>
+        <div id={data._id} className={`w-full flex gap-2 justify-between items-center p-2 border rounded ${mode === 'edit' ? 'bg-red-50' : ''}`}>
 
             {/* edit */}
             <div className="flex flex-col items-start">

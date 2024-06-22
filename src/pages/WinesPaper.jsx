@@ -113,11 +113,9 @@ const WinesPaper = () => {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const scroll = params.get('scroll');
-    const idTargetRef = useRef();
 
     useEffect(() => {
         const targetElement = document.getElementById(scroll);
-        console.log('tagert element: ', targetElement);
         if (winesData && targetElement) {
             const scrollYOffset = -300;
             const scrollY = targetElement.getBoundingClientRect().top + window.pageYOffset + scrollYOffset;
@@ -220,7 +218,7 @@ const WinesPaper = () => {
                 </div>}
 
             {
-                isLogged &&
+                isLogged && mode.mode === 'edit' &&
                 <div className="flex flex-col gap-2">
                     <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
                         <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>

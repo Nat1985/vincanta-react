@@ -50,6 +50,18 @@ const FoodPaper = () => {
         if (data) checkCourses();
     }, [data])
 
+    // Handle init scroll ater edit
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const scroll = params.get('scroll');
+    useEffect(() => {
+        const targetElement = document.getElementById(scroll);
+        if (data && targetElement) {
+            const scrollYOffset = -300;
+            const scrollY = targetElement.getBoundingClientRect().top + window.pageYOffset + scrollYOffset;
+            window.scrollTo({ top: scrollY, behavior: 'smooth' });
+        }
+    }, [data])
 
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8 w-full px-4 mb-8">
