@@ -55,6 +55,7 @@ const AddNewWine = () => {
         tablePrice: null,
         takeAwayPrice: null,
         award: false,
+        isBio: false,
         sboccatura: false,
         sboccaturaDate: '',
         isGoodValue: false,
@@ -81,6 +82,7 @@ const AddNewWine = () => {
                     tablePrice: wineData.tablePrice,
                     takeAwayPrice: wineData.takeAwayPrice,
                     award: wineData.award,
+                    isBio: wineData.isBio,
                     sboccatura: wineData.sboccatura.isTrue,
                     sboccaturaDate: wineData.sboccatura.date,
                     isGoodValue: wineData.isGoodValue,
@@ -348,12 +350,20 @@ const AddNewWine = () => {
                             </div>
 
                             {/* Buon rapporto qualità/prezzo */}
-                            {/* Preferiti */}
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
                                 <input type="checkbox" id="isGoodValue" className="w-6 h-6 mt-1" onChange={handleInputData} checked={inputData.isGoodValue} />
                                 <div className="flex gap-2 border rounded px-2">
-                                    <i className="fi fi-rr-badge-check mt-1 text-green-400"></i>
+                                    <i className="fi fi-sr-euro mt-1 text-blue-500"></i>
                                     <label htmlFor="isGoodValue">Buon rapporto qualità/prezzo</label>
+                                </div>
+                            </div>
+
+                            {/* Biologico */}
+                            <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-start items-center">
+                                <input type="checkbox" id="isBio" className="w-6 h-6 mt-1" onChange={handleInputData} checked={inputData.isBio} />
+                                <div className="flex gap-2 border rounded px-2">
+                                    <i className="fi fi-rr-leaf mt-1 text-green-500"></i>
+                                    <label htmlFor="isGoodValue">Biologico</label>
                                 </div>
                             </div>
 
