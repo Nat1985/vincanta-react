@@ -218,7 +218,7 @@ const WinesPaper = () => {
                 </div>}
 
             {
-                isLogged && mode.mode === 'edit' &&
+                isLogged && // && mode.mode === 'edit' togliere il tasto da carta vini
                 <div className="flex flex-col gap-2">
                     <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
                         <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>
