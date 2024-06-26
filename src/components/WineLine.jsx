@@ -20,6 +20,10 @@ const WineLine = ({ wineData }) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false); // Questo stato è slegato dallo stato generale mode. Questo si attiva dopo aver cliccato sull'icona di modifica (e non selezionanado 'Gestione prodotti')
 
+
+    useEffect(() => {
+
+    }, [])
     // Delete fetch
     const [deleteFetchStatus, setDeleteFetchStatus] = useState('idle');
     const sendDeleteFetch = async () => {
@@ -34,7 +38,7 @@ const WineLine = ({ wineData }) => {
             });
             if (response.ok) {
                 setDeleteFetchStatus('succeeded');
-                window.location.href = "/";
+                window.location.href = "/?mode=edit";
             } else {
                 setDeleteFetchStatus('failed');
             }

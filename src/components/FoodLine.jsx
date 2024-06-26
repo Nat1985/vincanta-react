@@ -32,7 +32,7 @@ const FoodLine = ({ data }) => {
                 console.log('Fetch result: ', result);
                 setFetchStatus('succeeded');
                 setTimeout(() => {
-                    window.location.href = "/food"
+                    window.location.href = "/food?mode=edit"
                 }, 2000)
             } else {
                 const error = await response.json();

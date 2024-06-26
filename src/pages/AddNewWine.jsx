@@ -5,6 +5,10 @@ import { useSelector } from "react-redux";
 
 const AddNewWine = () => {
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
     // Check new or edit and fetch values and check scroll
     const [wineToEdit, setWineToEdit] = useState(null);
     const [wineData, setWineData] = useState(null);
@@ -140,9 +144,9 @@ const AddNewWine = () => {
                 if (response.ok) {
                     setFetchStatus('succeeded');
                     if (wineToEdit) {
-                        window.location.href = `/?scroll=${wineToEdit}`
+                        window.location.href = `/?mode=edit&scroll=${wineToEdit}`
                     } else {
-                        window.location.href = "/"
+                        window.location.href = "/?mode=edit"
                     }
                 } else {
                     const error = await response.json();
@@ -157,12 +161,6 @@ const AddNewWine = () => {
             }
         }
     }
-    // Scroll to bottom after fetch
-    useEffect(() => {
-        if (fetchStatus === "succeeded") {
-            window.scrollTo(0, document.body.scrollHeight);
-        }
-    }, [fetchStatus])
 
     useEffect(() => {
         console.log('inputData: ', inputData)

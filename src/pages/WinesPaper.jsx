@@ -9,6 +9,7 @@ import SearchBar from "../components/SearchBar.jsx";
 import { getFavourites, setSearch } from "../redux/querySlice.js";
 import PriceRange from "../components/PriceRange.jsx";
 import VolumeRange from "../components/VolumeRange.jsx";
+import { selectMode } from "../redux/modeSlice.js";
 
 const WinesPaper = () => {
 
@@ -109,10 +110,17 @@ const WinesPaper = () => {
     }
 
     // Init scroll (if user come from edit mode) - this start when last state update is finish
-
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const scroll = params.get('scroll');
+    const queryMode = params.get('mode');
+
+    useEffect(() => {
+        console.log('queryMode: ', queryMode)
+        if(queryMode === 'edit') {
+            dispatch(selectMode({mode: 'edit'}))
+        }
+    }, [queryMode])
 
     useEffect(() => {
         const targetElement = document.getElementById(scroll);
@@ -218,7 +226,7 @@ const WinesPaper = () => {
                 </div>}
 
             {
-                isLogged && // && mode.mode === 'edit' togliere il tasto da carta vini
+                isLogged && mode.mode === 'edit' &&
                 <div className="flex flex-col gap-2">
                     <Link to="/add-new-product"><div className="flex items-center gap-2 border border-[#782a76] px-3 py-2 rounded cursor-pointer">
                         <i class="fi fi-rr-add text-[#782a76] text-4xl mt-[5px]"></i>
