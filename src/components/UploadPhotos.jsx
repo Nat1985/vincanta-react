@@ -113,7 +113,7 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
 
         try {
             const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/delete-image`;
-            const headers = {'Content-Type': 'application/json'};
+            const headers = { 'Content-Type': 'application/json' };
             const options = {
                 method: 'DELETE',
                 headers,
@@ -121,7 +121,7 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
             }
             const response = await fetch(url, options);
             if (response.ok) {
-                const result = response.json();
+                const result = await response.json();
 
                 // cancello l'immagine da inputData.[id]Label
                 const imageField = id === 'frontInput' ? 'frontLabel' : 'backLabel';
@@ -133,21 +133,40 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
                     ...prevState,
                     [id]: 'succeeded'
                 }));
+
             } else {
-                const error = response.json();
+                const error = await response.json();
                 throw error
             }
         } catch (error) {
-            setDeleteFetchStatus(prevState => ({
-                ...prevState,
-                [id]: 'failed'
-            }));
-            setDeleteError(prevState => ({
-                ...prevState,
-                [id]: error.message || "Errore da parte del server"
-            }))
+            if (error.message === 'Immagine non trovata.') {
+                console.log('Immagine non trovata. inputData aggiornato.')
+                // Il caso in cui non trova l'immagine da eliminare su cloudinary corrisponde ad un eliminazione precedente da parte dell'admin senza poi aver salvato i dati del vino
+                // In quel caso l'immagine è già stata eliminata da Cloudinary ma la voce frontLabel o backLabel non è ancora stata aggiornata
+                // Aggiorno frontLabel o backLabel per impostare l'assenza della foto
+                // Se l'admin non salva ancora, al prossimo tentantivo di eliminazione della foto il codice tornerà qui, fino a che l'admin non salverà i dati
+                const field = id === 'frontInput' ? 'frontLabel' : 'backLabel';
+                setInputData(prevState => ({
+                    ...prevState,
+                    [field]: null
+                }))
+            } else {
+                setDeleteFetchStatus(prevState => ({
+                    ...prevState,
+                    [id]: 'failed'
+                }));
+
+                setDeleteError(prevState => ({
+                    ...prevState,
+                    [id]: error.message || "Errore da parte del server"
+                }))
+            }
         }
     }
+
+    useEffect(() => {
+        console.log('deleteError: ', deleteError)
+    }, [deleteError])
 
     return (
         <div className="w-full border border-[#792676] flex flex-col sm:flex-row items-center gap-4 p-4 rounded">
@@ -165,7 +184,7 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
                     </div>
                 </div>}
                 {/* Immagine caricata */}
-                {(fetchStatus.frontInput === 'idle' || fetchStatus.frontInput === 'succeeded') && frontLabel && <img src={frontLabel.resizedUrl} />}
+                {(fetchStatus.frontInput === 'idle' || fetchStatus.frontInput === 'succeeded') && frontLabel && <img src={frontLabel.resizedUrl} className="rounded" />}
                 {/* Errore fetch server */}
                 {fetchStatus.frontInput === 'failed' && fetchError.frontInput && <div className="text-xs">{fetchError.frontInput}</div>}
                 {/* Loading */}
@@ -176,7 +195,7 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
                     {!frontLabel && !uploadedFront && (fetchStatus.frontInput === 'idle' || fetchStatus.frontInput === 'succeeded') && <button className="bg-white border-2 border-[#792676] text-[18px]" onClick={() => frontInputRef.current.click()}>Carica etichetta anteriore</button>}
                     {frontLabel && (deleteFetchStatus.frontInput === 'idle' || deleteFetchStatus.frontInput === 'succeeded') && <button className="bg-white border-2 border-[#792676] text-[18px]" onClick={() => handleDeleteImage('frontInput')}>Elimina etichetta</button>}
                     {frontLabel && !uploadedFront && deleteFetchStatus.frontInput === 'loading' && <div className="w-full"><div className="custom-loader"></div></div>}
-                    {frontLabel && !uploadedFront && deleteFetchStatus.frontInput === 'failed' && deleteError &&  <div className="text-xs">{deleteError.frontInput}</div>}
+                    {frontLabel && !uploadedFront && deleteFetchStatus.frontInput === 'failed' && deleteError && <div className="text-xs">{deleteError.frontInput}</div>}
                 </div>
             </div>
             {/* Etichetta posteriore */}
@@ -193,7 +212,7 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
                     </div>
                 </div>}
                 {/* Immagine caricata */}
-                {(fetchStatus.backInput === 'idle' || fetchStatus.backInput === 'succeeded') && backLabel && <img src={backLabel.resizedUrl} />}
+                {(fetchStatus.backInput === 'idle' || fetchStatus.backInput === 'succeeded') && backLabel && <img src={backLabel.resizedUrl} className="rounded" />}
                 {/* Errore fetch server */}
                 {fetchStatus.backInput === 'failed' && fetchError.backInput && <div className="text-xs">{fetchError.backInput}</div>}
                 {/* Loading */}
@@ -205,7 +224,7 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
                     {!backLabel && !uploadedBack && (fetchStatus.backInput === 'idle' || fetchStatus.backInput === 'succeeded') && <button className="bg-white border-2 border-[#792676] text-[18px]" onClick={() => backInputRef.current.click()}>Carica etichetta posteriore</button>}
                     {backLabel && (deleteFetchStatus.backInput === 'idle' || deleteFetchStatus.backInput === 'succeeded') && <button className="bg-white border-2 border-[#792676] text-[18px]" onClick={() => handleDeleteImage('backInput')}>Elimina etichetta</button>}
                     {backLabel && !uploadedBack && deleteFetchStatus.backInput === 'loading' && <div className="w-full"><div className="custom-loader"></div></div>}
-                    {backLabel && !uploadedBack && deleteFetchStatus.backInput === 'failed' && deleteError &&  <div className="text-xs">{deleteError.backInput}</div>}
+                    {backLabel && !uploadedBack && deleteFetchStatus.backInput === 'failed' && deleteError && <div className="text-xs">{deleteError.backInput}</div>}
                 </div>
             </div>
         </div>

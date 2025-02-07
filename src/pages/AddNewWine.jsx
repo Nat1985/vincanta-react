@@ -109,8 +109,17 @@ const AddNewWine = () => {
             ...prevData,
             [id]: inputValue
         }))
-
     }
+
+    // Azzero la regione se il vino non è italiano o francese
+    useEffect(() => {
+        if(inputData.country !== 'Italia' && inputData.country !== 'Francia' && inputData.region) {
+            setInputData(prevData => ({
+                ...prevData,
+                region: ''
+            }))
+        }
+    }, [inputData])
 
     // Send fetch
     const [inputError, setInputError] = useState(false);
@@ -198,6 +207,7 @@ const AddNewWine = () => {
                                     <option value="Portogallo">Portogallo</option>
                                     <option value="Slovenia">Slovenia</option>
                                     <option value="Spagna">Spagna</option>
+                                    <option value="Ungheria">Ungheria</option>
                                     <option value="USA">USA</option>
                                 </select>
                             </div>
