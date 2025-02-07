@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FetchLoader from '../components/FetchLoader.jsx';
 import { PrimaryButton } from "../components/buttons.jsx";
 import { useSelector } from "react-redux";
+import UploadPhotos from "../components/UploadPhotos.jsx";
 
 const AddNewWine = () => {
 
@@ -65,6 +66,8 @@ const AddNewWine = () => {
         isGoodValue: false,
         favourite: false,
         description: null,
+        frontLabel: null,
+        backLabel: null
     })
     // debug
     useEffect(() => {
@@ -92,6 +95,8 @@ const AddNewWine = () => {
                     isGoodValue: wineData.isGoodValue,
                     favourite: wineData.favourite,
                     description: wineData.description,
+                    frontLabel: wineData.frontLabel,
+                    backLabel: wineData.backLabel
                 })
             }
         }
@@ -382,6 +387,8 @@ const AddNewWine = () => {
                                 }
                             </div>
 
+                            {/* FOTO */}
+                            <UploadPhotos frontLabel={inputData.frontLabel} backLabel={inputData.backLabel} setInputData={setInputData} />
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="description">Note</label>
