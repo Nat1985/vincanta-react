@@ -399,6 +399,7 @@ const AddNewWine = () => {
 
                             {/* FOTO */}
                             <UploadPhotos frontLabel={inputData.frontLabel} backLabel={inputData.backLabel} setInputData={setInputData} />
+                            <div className="text-sm mt-[-32px] text-[#782a76]">Ricordarsi di salvare dopo aver caricato nuove etichette</div>
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="description">Note</label>

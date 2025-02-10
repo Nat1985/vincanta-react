@@ -13,10 +13,6 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
         frontInput: null,
         backInput: null
     })
-    useEffect(() => {
-        console.log('fetchStatus: ', fetchStatus);
-        console.log('fetchError: ', fetchError);
-    }, [fetchStatus, fetchError])
     const handleUploadImage = (event) => {
         event.preventDefault();
         const { id } = event.target;
@@ -165,8 +161,11 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
     }
 
     useEffect(() => {
-        console.log('deleteError: ', deleteError)
-    }, [deleteError])
+        console.log('fetchStatus: ', fetchStatus);
+    }, [fetchStatus]);
+    useEffect(() => {
+        console.log('deleteFetchStatus: ', deleteFetchStatus);
+    }, [deleteFetchStatus]);
 
     return (
         <div className="w-full border border-[#792676] flex flex-col sm:flex-row items-center gap-4 p-4 rounded">
