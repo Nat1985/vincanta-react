@@ -39,7 +39,6 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
     }
     // Funzione per svuotare l'input di upload
     const inputEmpty = (id) => {
-        console.log(id)
         let inputElement = document.getElementById(id);
         inputElement.value = null;
         id === 'frontInput' ? setUploadedFront(null) : setUploadedBack(null);
@@ -145,13 +144,16 @@ const UploadPhotos = ({ frontLabel, backLabel, setInputData }) => {
                 setInputData(prevState => ({
                     ...prevState,
                     [field]: null
-                }))
+                }));
+                setDeleteFetchStatus(prevState => ({
+                    ...prevState,
+                    [id]: 'succeeded'
+                }));
             } else {
                 setDeleteFetchStatus(prevState => ({
                     ...prevState,
                     [id]: 'failed'
                 }));
-
                 setDeleteError(prevState => ({
                     ...prevState,
                     [id]: error.message || "Errore da parte del server"

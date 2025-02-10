@@ -33,7 +33,6 @@ const AddNewWine = () => {
                 });
                 if (response.ok) {
                     const result = await response.json();
-                    console.log('payload: ', result.payload)
                     setWineData(result.payload);
                     setWineDataFetchStatus('succeeded');
                 } else {
@@ -69,10 +68,6 @@ const AddNewWine = () => {
         frontLabel: null,
         backLabel: null
     })
-    // debug
-    useEffect(() => {
-        console.log('inputData: ', inputData);
-    }, [inputData])
     useEffect(() => {
         if (wineToEdit) {
             if (wineData) {
@@ -175,10 +170,6 @@ const AddNewWine = () => {
             }
         }
     }
-
-    useEffect(() => {
-        console.log('inputData: ', inputData)
-    }, [inputData])
 
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8">

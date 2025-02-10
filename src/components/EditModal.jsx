@@ -34,10 +34,6 @@ const EditModal = ({ data }) => {
         }))
     }
 
-    useEffect(() => {
-        console.log('inputData: ', inputData)
-    }, [inputData])
-
     // Handle send fetch
     const [inputError, setInputError] = useState(false);
     const [fetchStatus, setFetchStatus] = useState('idle');

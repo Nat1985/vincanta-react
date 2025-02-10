@@ -21,9 +21,6 @@ const WinesPaper = () => {
     const { type, search, favourites, priceRange, volumeRange } = useSelector(state => state.query);
     // Wine data fetch
     const [winesData, setWinesData] = useState(null);
-    useEffect(() => {
-        console.log('winesData: ', winesData)
-    }, [winesData])
     const [fetchStatus, setFetchStatus] = useState('idle');
     const [error, setError] = useState(null);
     const winesDataFetch = async () => {
@@ -36,7 +33,6 @@ const WinesPaper = () => {
         const volume = volumeRange ? volumeRange : '';
         try {
             const url = `${process.env.REACT_APP_SERVER_BASE_URL}/wines/get-all-wines?${label}=${extendedUrl}&from=${rangeFrom}&to=${rangeTo}&option=${option}&volume=${volume}`
-            console.log('url: ', url)
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -116,7 +112,6 @@ const WinesPaper = () => {
     const queryMode = params.get('mode');
 
     useEffect(() => {
-        console.log('queryMode: ', queryMode)
         if(queryMode === 'edit') {
             dispatch(selectMode({mode: 'edit'}))
         }
@@ -130,11 +125,6 @@ const WinesPaper = () => {
             window.scrollTo({ top: scrollY, behavior: 'smooth' });
         }
     }, [uniqueRegions, winesData])
-
-    //Debug
-    useEffect(() => {
-        console.log('winesData: ', winesData)
-    }, [winesData])
 
     // counter vini
     const [wineCounter, setWineCounter] = useState(null);
