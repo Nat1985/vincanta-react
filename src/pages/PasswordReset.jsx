@@ -26,7 +26,6 @@ const PasswordReset = () => {
             const response = await fetch(url, options);
             if (response.ok) {
                 const result = await response.json();
-                console.log('sendEmail result: ', result);
                 setFetchStatus('succeeded');
             } else {
                 const error = await response.json();

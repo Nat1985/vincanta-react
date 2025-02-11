@@ -14,11 +14,12 @@ import champagneRoseIcon from '../static/images/champagne_rose.png';
 import cakeIcon from '../static/images/cake_slice.png';
 import SboccLabel from "./SboccLabel";
 import CatLabel from "./CatLabel.jsx";
+import Labels from "./Labels.jsx";
 
 const WineLine = ({ wineData }) => {
     const mode = useSelector(state => state.mode);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [isEditing, setIsEditing] = useState(false); // Questo stato è slegato dallo stato generale mode. Questo si attiva dopo aver cliccato sull'icona di modifica (e non selezionanado 'Gestione prodotti')
+    const [isEditing, setIsEditing] = useState(false); // Questo stato è slegato dallo stato generale mode. Questo si attiva dopo aver cliccato sull'icona di modifica (e non selezionando 'Gestisci vini')
 
 
     useEffect(() => {
@@ -47,11 +48,18 @@ const WineLine = ({ wineData }) => {
         }
     }
 
+    // Attivazione della modale delle labels
+    const [isLabel, setIsLabel] = useState(false);
+    const handleActiveLabel = () => {
+        if(mode.mode !== 'edit') setIsLabel(true)
+    }
+
     return (
 
         !isEditing && !isDeleting ? (
             <div id={wineData._id} className={`flex flex-col md:flex-row justify-between gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0 ${mode.mode === 'edit' ? 'bg-fuchsia-50 md:p-2' : ''}`}>
-                
+                {/* Overlay e foto etichette */}
+                {isLabel && <Labels setIsLabel={setIsLabel} frontLabel={wineData.frontLabel} backLabel={wineData.backLabel}/>}
                 {/* Blocco nome e descrizioni */}
                 <div className="flex gap-4 text-start">
                     {mode.mode === 'edit' &&
@@ -60,7 +68,7 @@ const WineLine = ({ wineData }) => {
                             <i class="fi fi-rr-trash mt-[3px] text-red-500 cursor-pointer text-4xl" onClick={() => setIsDeleting(true)}></i>
                         </div>
                     }
-                    <div className="flex flex-col">
+                    <div className="flex flex-col cursor-pointer" onClick={handleActiveLabel}>
                         <div className="flex gap-1">
                             <div className="pt-[5px]">
                                 {wineData && wineData.type === 'red' && <img src={redIcon} className="w-6 h-6" />}

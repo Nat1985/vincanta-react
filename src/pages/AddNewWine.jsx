@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FetchLoader from '../components/FetchLoader.jsx';
 import { PrimaryButton } from "../components/buttons.jsx";
 import { useSelector } from "react-redux";
+import UploadPhotos from "../components/UploadPhotos.jsx";
 
 const AddNewWine = () => {
 
@@ -32,7 +33,6 @@ const AddNewWine = () => {
                 });
                 if (response.ok) {
                     const result = await response.json();
-                    console.log('payload: ', result.payload)
                     setWineData(result.payload);
                     setWineDataFetchStatus('succeeded');
                 } else {
@@ -65,11 +65,9 @@ const AddNewWine = () => {
         isGoodValue: false,
         favourite: false,
         description: null,
+        frontLabel: null,
+        backLabel: null
     })
-    // debug
-    useEffect(() => {
-        console.log('inputData: ', inputData);
-    }, [inputData])
     useEffect(() => {
         if (wineToEdit) {
             if (wineData) {
@@ -92,6 +90,8 @@ const AddNewWine = () => {
                     isGoodValue: wineData.isGoodValue,
                     favourite: wineData.favourite,
                     description: wineData.description,
+                    frontLabel: wineData.frontLabel,
+                    backLabel: wineData.backLabel
                 })
             }
         }
@@ -104,8 +104,17 @@ const AddNewWine = () => {
             ...prevData,
             [id]: inputValue
         }))
-
     }
+
+    // Azzero la regione se il vino non è italiano o francese
+    useEffect(() => {
+        if(inputData.country !== 'Italia' && inputData.country !== 'Francia' && inputData.region) {
+            setInputData(prevData => ({
+                ...prevData,
+                region: ''
+            }))
+        }
+    }, [inputData])
 
     // Send fetch
     const [inputError, setInputError] = useState(false);
@@ -162,10 +171,6 @@ const AddNewWine = () => {
         }
     }
 
-    useEffect(() => {
-        console.log('inputData: ', inputData)
-    }, [inputData])
-
     return (
         <div className="flex flex-col items-center text-center gap-8 mt-8">
             {
@@ -193,6 +198,7 @@ const AddNewWine = () => {
                                     <option value="Portogallo">Portogallo</option>
                                     <option value="Slovenia">Slovenia</option>
                                     <option value="Spagna">Spagna</option>
+                                    <option value="Ungheria">Ungheria</option>
                                     <option value="USA">USA</option>
                                 </select>
                             </div>
@@ -382,6 +388,9 @@ const AddNewWine = () => {
                                 }
                             </div>
 
+                            {/* FOTO */}
+                            <UploadPhotos frontLabel={inputData.frontLabel} backLabel={inputData.backLabel} setInputData={setInputData} />
+                            <div className="text-sm mt-[-32px] text-[#782a76]">Ricordarsi di salvare dopo aver caricato nuove etichette</div>
 
                             <div className="flex flex-col md:flex-row gap-1 md:gap-4 justify-between items-center">
                                 <label htmlFor="description">Note</label>

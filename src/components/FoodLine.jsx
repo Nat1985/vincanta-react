@@ -15,7 +15,6 @@ const FoodLine = ({ data }) => {
 
     // handle isDeleting
     const [isDeleting, setIsDeleting] = useState(false);
-    useEffect(() => {console.log('isDeleting: ', isDeleting)})
 
     // fetchDelete
     const [fetchStatus, setFetchStatus] = useState('idle');

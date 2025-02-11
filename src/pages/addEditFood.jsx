@@ -13,9 +13,6 @@ const AddEditFood = () => {
         allergens: [],
         notes: null
     })
-    useEffect(() => {
-        console.log('inputData: ', inputData)
-    }, [inputData])
     const handleInputData = (event) => {
         const { id, value, type, checked } = event.target;
         let fixedValue = type === "checkbox" ? checked : value;
@@ -56,14 +53,12 @@ const AddEditFood = () => {
     }, [editId])
     const getFoodToEdit = async () => {
         let url = `${process.env.REACT_APP_SERVER_BASE_URL}/food/${editId}`;
-        console.log('url: ', url)
         let headers = { 'Content-Type': 'application/json' };
         let options = { method: 'GET', headers };
         try {
             const response = await fetch(url, options);
             if (response.ok) {
                 const result = await response.json();
-                console.log('payload: ', result.payload)
                 setInputData(result.payload)
             } else {
                 const error = await response.json();

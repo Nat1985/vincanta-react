@@ -11,9 +11,6 @@ const SearchBar = () => {
         const { value } = event.target
         setSearchInput(value)
     }
-    useEffect(() => {
-        console.log('searchInput: ', searchInput)
-    }, [searchInput])
     const sendSearch = () => {
         dispatch(setSearch(searchInput))
     }

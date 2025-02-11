@@ -14,9 +14,6 @@ const Menu = () => {
     const navigate = useNavigate();
     /* const [showMenu, setShowMenu] = useState(0); */
     const { isShow } = useSelector(state => state.menu);
-    useEffect(() => {
-        console.log('isShow: ', isShow);
-    }, [isShow])
 
     // handle logout
     const handleLogout = () => {
