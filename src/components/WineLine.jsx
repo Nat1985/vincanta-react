@@ -51,7 +51,7 @@ const WineLine = ({ wineData }) => {
     // Attivazione della modale delle labels
     const [isLabel, setIsLabel] = useState(false);
     const handleActiveLabel = () => {
-        if(mode.mode !== 'edit') setIsLabel(true)
+        if (mode.mode !== 'edit') setIsLabel(true)
     }
 
     return (
@@ -59,7 +59,7 @@ const WineLine = ({ wineData }) => {
         !isEditing && !isDeleting ? (
             <div id={wineData._id} className={`flex flex-col md:flex-row justify-between gap-2 mt-8 md:mt-0 border rounded md:border-0 p-2 md:p-0 ${mode.mode === 'edit' ? 'bg-fuchsia-50 md:p-2' : ''}`}>
                 {/* Overlay e foto etichette */}
-                {isLabel && <Labels setIsLabel={setIsLabel} frontLabel={wineData.frontLabel} backLabel={wineData.backLabel}/>}
+                {isLabel && <Labels setIsLabel={setIsLabel} frontLabel={wineData.frontLabel} backLabel={wineData.backLabel} />}
                 {/* Blocco nome e descrizioni */}
                 <div className="flex gap-4 text-start">
                     {mode.mode === 'edit' &&
@@ -70,6 +70,7 @@ const WineLine = ({ wineData }) => {
                     }
                     <div className="flex flex-col cursor-pointer" onClick={handleActiveLabel}>
                         <div className="flex gap-1">
+                            {(wineData.frontLabel || wineData.backLabel) && <div className="text-xs text-[#782a76] flex items-center"><i className="fi fi-rr-picture"></i></div>}
                             <div className="pt-[5px]">
                                 {wineData && wineData.type === 'red' && <img src={redIcon} className="w-6 h-6" />}
                                 {wineData && wineData.type === 'white' && <img src={whiteIcon} className="w-6 h-6" />}
