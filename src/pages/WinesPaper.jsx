@@ -110,10 +110,11 @@ const WinesPaper = () => {
     const params = new URLSearchParams(queryString);
     const scroll = params.get('scroll');
     const queryMode = params.get('mode');
+    const hasScrolled = useRef(false);
 
     useEffect(() => {
-        if(queryMode === 'edit') {
-            dispatch(selectMode({mode: 'edit'}))
+        if (queryMode === 'edit') {
+            dispatch(selectMode({ mode: 'edit' }))
         }
     }, [queryMode])
 
@@ -123,6 +124,14 @@ const WinesPaper = () => {
             const scrollYOffset = -300;
             const scrollY = targetElement.getBoundingClientRect().top + window.pageYOffset + scrollYOffset;
             window.scrollTo({ top: scrollY, behavior: 'smooth' });
+
+            // Rimuove la query "scroll" dalla URL
+            // Correzione bug 30 marzo 2025
+            // Dopo lo scroll automatico al ritorno in questa pagina post modifica
+            // la query ?scroll=stringaId si cancella e non provoca ulteriori scroll inaspettati
+            const url = new URL(window.location);
+            url.searchParams.delete('scroll');
+            window.history.replaceState({}, '', url);
         }
     }, [uniqueRegions, winesData])
 
